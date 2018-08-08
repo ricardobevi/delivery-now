@@ -1,0 +1,55 @@
+buildscript {
+	ext {
+		springBootVersion = '2.0.4.RELEASE'
+	}
+	repositories {
+		mavenCentral()
+		maven {
+			url "https://plugins.gradle.org/m2/"
+		}
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+		classpath "gradle.plugin.com.palantir.gradle.docker:gradle-docker:0.20.1"
+	}
+	
+	
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+apply plugin: 'com.palantir.docker'
+
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+group = 'com.ricardobevi'
+version = '0.0.1-SNAPSHOT'
+
+jar {
+    manifest { attributes "Main-Class": "com.ricardobevi.delivernow.BaseApplication" }
+}
+
+
+
+repositories {
+	mavenCentral()
+}
+
+
+dependencies {
+	compile("org.springframework.boot:spring-boot-starter-web")
+	compile('org.springframework.boot:spring-boot-starter-jersey')
+	compile('org.springframework.boot:spring-boot-starter-actuator')
+	testCompile('org.springframework.boot:spring-boot-starter-test')
+}
+
+
+docker {
+    dependsOn build
+    name "${bootJar.baseName}"
+    files bootJar.archivePath
+    buildArgs(['JAR_FILE': "${bootJar.archiveName}"])
+}
