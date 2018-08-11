@@ -5,12 +5,12 @@ import com.ricardobevi.delivernow.gateways.RestaurantGateway;
 
 public class AddReviewUseCaseInput {
 
-	private final String restaurantId;
+	private final Long restaurantId;
 	private final ReviewDto reviewDto;
 	private final RestaurantGateway restaurantGateway;
 	
 	
-	public AddReviewUseCaseInput(String restaurantId, ReviewDto reviewDto,
+	public AddReviewUseCaseInput(Long restaurantId, ReviewDto reviewDto,
 			RestaurantGateway restaurantGateway) {
 		
 		this.restaurantId = restaurantId;
@@ -20,7 +20,7 @@ public class AddReviewUseCaseInput {
 	}
 
 
-	public String getRestaurantId() {
+	public Long getRestaurantId() {
 		return restaurantId;
 	}
 
