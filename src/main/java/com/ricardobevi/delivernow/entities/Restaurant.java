@@ -2,13 +2,13 @@ package com.ricardobevi.delivernow.entities;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import com.ricardobevi.delivernow.dto.RestaurantDto;
 
 public class Restaurant {
 
+	private Long restaurantId;
 	private List<Review> reviewList;
 	
 	public Restaurant() {
@@ -16,6 +16,7 @@ public class Restaurant {
 	}
 	
 	public Restaurant(RestaurantDto restaurantDto) {
+		this.restaurantId = restaurantDto.id;
 		this.reviewList = restaurantDto.reviews.stream().map(reviewDto -> new Review(reviewDto)).collect(Collectors.toList());
 	}
 
@@ -33,7 +34,8 @@ public class Restaurant {
 
 	public RestaurantDto asDto() {
 		RestaurantDto restaurantDto = new RestaurantDto();
-		
+
+		restaurantDto.id = this.restaurantId;
 		restaurantDto.rating = this.computeAverageRating().asDouble();
 		restaurantDto.reviews = reviewList.stream().map(Review::asDto).collect(Collectors.toList());
 		
