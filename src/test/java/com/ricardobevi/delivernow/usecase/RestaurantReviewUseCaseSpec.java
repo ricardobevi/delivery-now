@@ -1,5 +1,6 @@
 package com.ricardobevi.delivernow.usecase;
 
+import com.ricardobevi.delivernow.dto.RestaurantDto;
 import com.ricardobevi.delivernow.dto.ReviewDto;
 import com.ricardobevi.delivernow.gateways.RestaurantGateway;
 import com.ricardobevi.delivernow.usecase.addreview.AddReviewUseCase;
@@ -26,10 +27,10 @@ public class RestaurantReviewUseCaseSpec {
 	@Test
 	public void test_add_review_to_a_restaurant() {
 		
-		String restaurantId = "123456";
+		Long restaurantId = 123456L;
 		
 		AddReviewUseCaseInput addReviewUseCaseInput =
-				new AddReviewUseCaseInput(restaurantId, createReviewDto(), new RestaurantGateway());
+				new AddReviewUseCaseInput(restaurantId, createReviewDto(), new MockedRestaurantGateway());
 
 		AddReviewUseCaseOutput addReviewUseCaseOutput =
 				new AddReviewUseCase(addReviewUseCaseInput).execute();
@@ -38,5 +39,17 @@ public class RestaurantReviewUseCaseSpec {
 	}
 	
 
+	private class MockedRestaurantGateway implements RestaurantGateway {
+
+		
+		public RestaurantDto getRestaurantFromId(Long restaurantId) {
+			return new RestaurantDto();
+		}
+
+
+		public void save(RestaurantDto asDto) {
+		}
+		
+	}
 	
 }
