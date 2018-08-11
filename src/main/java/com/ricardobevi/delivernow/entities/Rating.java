@@ -17,6 +17,10 @@ public class Rating {
 	private Double getRating() {
 		return this.rating;
 	}
+	
+	public Double asDouble() {
+		return this.rating;
+	}
 
 	@Override
 	public boolean equals(Object obj) {
