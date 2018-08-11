@@ -2,7 +2,6 @@ package com.ricardobevi.delivernow.gateways.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
@@ -29,24 +28,19 @@ public class RestaurantDAO {
 		return id;
 	}
 	
-	public RestaurantDAO setReviews(List<ReviewDAO> reviews) {
-		this.reviews = reviews;
-		return this;
-	}
-	
-	
 	public RestaurantDto asDto() {
 		
-		RestaurantDto restaurantDto = new RestaurantDto(id);
-		
-		restaurantDto.reviews = reviews.stream().map(ReviewDAO::asDto).collect(Collectors.toList());
+		RestaurantDto restaurantDto = new RestaurantDto(
+				id,
+				1.0,
+				reviews.stream().map(ReviewDAO::asDto).collect(Collectors.toList())
+		);
 		
 		return restaurantDto;
 	}
 
 	public void updateWithDto(RestaurantDto restaurantDto) {
-		this.id = restaurantDto.id;
-		this.reviews = restaurantDto.reviews.stream().map(reviewDto -> new ReviewDAO(reviewDto)).collect(Collectors.toList());
+		this.reviews = restaurantDto.getReviews().stream().map(reviewDto -> new ReviewDAO(reviewDto)).collect(Collectors.toList());
 	}
 	
 }

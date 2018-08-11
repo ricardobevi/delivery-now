@@ -16,8 +16,8 @@ public class Restaurant {
 	}
 	
 	public Restaurant(RestaurantDto restaurantDto) {
-		this.restaurantId = restaurantDto.id;
-		this.reviewList = restaurantDto.reviews.stream().map(reviewDto -> new Review(reviewDto)).collect(Collectors.toList());
+		this.restaurantId = restaurantDto.getId();
+		this.reviewList = restaurantDto.getReviews().stream().map(reviewDto -> new Review(reviewDto)).collect(Collectors.toList());
 	}
 
 	public void addReview(Review review) {
@@ -33,11 +33,11 @@ public class Restaurant {
 	}
 
 	public RestaurantDto asDto() {
-		RestaurantDto restaurantDto = new RestaurantDto();
-
-		restaurantDto.id = this.restaurantId;
-		restaurantDto.rating = this.computeAverageRating().asDouble();
-		restaurantDto.reviews = reviewList.stream().map(Review::asDto).collect(Collectors.toList());
+		RestaurantDto restaurantDto = new RestaurantDto(
+				this.restaurantId,
+				this.computeAverageRating().asDouble(),
+				reviewList.stream().map(Review::asDto).collect(Collectors.toList())
+		);
 		
 		return restaurantDto;
 	}  

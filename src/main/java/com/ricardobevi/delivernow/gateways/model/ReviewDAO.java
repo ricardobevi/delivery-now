@@ -20,30 +20,12 @@ public class ReviewDAO {
     
     public ReviewDAO() {}
     
-    
-	public ReviewDAO(String name, String review, Double rating) {
-		this.name = name;
-		this.review = review;
-		this.rating = rating;
-	}
-
 	public ReviewDAO(ReviewDto reviewDto) {
 		this.name = reviewDto.name;
 		this.review = reviewDto.review;
 		this.rating = reviewDto.rating;
 	}
 
-
-	public String getName() {
-		return name;
-	}
-	public String getReview() {
-		return review;
-	}
-	public Double getRating() {
-		return rating;
-	}
-	
     
 	public ReviewDto asDto() {
 		

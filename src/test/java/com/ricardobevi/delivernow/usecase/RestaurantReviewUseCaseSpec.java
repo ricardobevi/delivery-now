@@ -6,6 +6,9 @@ import com.ricardobevi.delivernow.gateways.RestaurantGateway;
 import com.ricardobevi.delivernow.usecase.addreview.AddReviewUseCase;
 import com.ricardobevi.delivernow.usecase.addreview.AddReviewUseCaseInput;
 import com.ricardobevi.delivernow.usecase.addreview.AddReviewUseCaseOutput;
+
+import java.util.Arrays;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -35,7 +38,7 @@ public class RestaurantReviewUseCaseSpec {
 		AddReviewUseCaseOutput addReviewUseCaseOutput =
 				new AddReviewUseCase(addReviewUseCaseInput).execute();
 
-		Assert.assertTrue(addReviewUseCaseOutput.getRestaurantDto().reviews.size() == 1);
+		Assert.assertTrue(addReviewUseCaseOutput.getRestaurantDto().getReviews().size() == 2);
 	}
 	
 
@@ -43,7 +46,7 @@ public class RestaurantReviewUseCaseSpec {
 
 		
 		public RestaurantDto getRestaurantFromId(Long restaurantId) {
-			return new RestaurantDto();
+			return new RestaurantDto(1L, 1.0, Arrays.asList(createReviewDto()));
 		}
 
 

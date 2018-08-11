@@ -18,7 +18,7 @@ public class DatabaseRestaurantGateway implements RestaurantGateway {
 	}
 
 	public void save(RestaurantDto restaurantDto) {
-		RestaurantDAO restaurantDao = restaurantRepository.findById(restaurantDto.id).orElse(new RestaurantDAO());
+		RestaurantDAO restaurantDao = restaurantRepository.findById(restaurantDto.getId()).orElse(new RestaurantDAO());
 
 		restaurantDao.updateWithDto(restaurantDto);
 		
