@@ -34,6 +34,7 @@ public class Restaurant {
 	public RestaurantDto asDto() {
 		RestaurantDto restaurantDto = new RestaurantDto();
 		
+		restaurantDto.rating = this.computeAverageRating().asDouble();
 		restaurantDto.reviews = reviewList.stream().map(Review::asDto).collect(Collectors.toList());
 		
 		return restaurantDto;
