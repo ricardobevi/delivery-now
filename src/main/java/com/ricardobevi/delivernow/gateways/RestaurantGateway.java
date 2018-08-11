@@ -2,15 +2,9 @@ package com.ricardobevi.delivernow.gateways;
 
 import com.ricardobevi.delivernow.dto.RestaurantDto;
 
-public class RestaurantGateway {
+public interface RestaurantGateway {
 
-	public RestaurantDto getRestaurantFromId(String restaurantId){
-		return new RestaurantDto();
-	}
-
-	public void save(RestaurantDto asDto) {
-		// TODO Auto-generated method stub
-		
-	}
+	public RestaurantDto getRestaurantFromId(Long restaurantId);
+	public void save(RestaurantDto asDto);
 
 }
