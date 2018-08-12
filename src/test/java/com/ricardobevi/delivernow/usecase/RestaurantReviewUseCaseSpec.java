@@ -16,15 +16,8 @@ public class RestaurantReviewUseCaseSpec {
 	
 	
 	private static final ReviewDto createReviewDto() {
-		
-		ReviewDto reviewDto = new ReviewDto();
-		
-		reviewDto.name = "Amelie";
-		reviewDto.review = "Me gusto mucho el restaurant, rica comida y buena atención.";
-		reviewDto.rating = 4.5;
-		
+		ReviewDto reviewDto = new ReviewDto("Amelie", "Me gusto mucho el restaurant, rica comida y buena atención.", 4.5);
 		return reviewDto;
-		
 	}
 
 	@Test
