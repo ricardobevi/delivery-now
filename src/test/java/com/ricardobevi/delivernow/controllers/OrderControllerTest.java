@@ -114,6 +114,31 @@ public class OrderControllerTest {
     }
     
     @Test
+    public void placeOrderRestaurantCantFullfill() throws Exception {
+    	
+    	Long restaurantId = this.restaurantDAOList.get(0).getId().longValue();
+    	
+    	OrderRequest orderRequest = new OrderRequest(
+    			Arrays.asList(new MealRequest("Magic Potatoes", "Potatoes", 2.0)),
+    			2.0,
+    			"221b Baker Street",
+    			"51.523767,-0.1607498"
+    	);
+    	
+        String orderJson = json(orderRequest);
+    	
+        this.mockMvc.perform(post("/order/" + restaurantId)
+                .contentType(contentType)
+                .content(orderJson))
+			    .andExpect(status().isBadRequest())
+			    .andExpect(content().contentType(contentType))
+        		.andExpect(jsonPath("$.status", is("The restaurant can't fullfill the order")))
+                ;
+        
+        
+    }
+    
+    @Test
     public void placeOrderWithFieldMissing() throws Exception {
     	
     	Long restaurantId = this.restaurantDAOList.get(0).getId().longValue();

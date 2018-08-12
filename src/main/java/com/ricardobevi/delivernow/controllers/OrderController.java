@@ -41,6 +41,10 @@ public class OrderController {
 				
 				PlaceOrderUseCaseOutput placeOrderUseCaseOutput = new PlaceOrderUseCase(placeOrderUseCaseinput).execute();
 				
+				if(placeOrderUseCaseOutput.getOrderStatusDto().isError()) {
+					return ResponseEntity.badRequest().body(placeOrderUseCaseOutput.getOrderStatusDto());
+				}
+				
 				return ResponseEntity.ok(placeOrderUseCaseOutput.getOrderStatusDto());
 
 			} catch (RestaurantNotFoundException restaurantNotFoundException) {

@@ -7,7 +7,7 @@ public class OrderError implements OrderStatus {
 	public OrderError() {}
 
 	public OrderStatusDto asDto() {
-		return new OrderStatusDto("The restaurant can't fullfill the order");
+		return new OrderStatusDto("The restaurant can't fullfill the order", true);
 	}
 	
 }
