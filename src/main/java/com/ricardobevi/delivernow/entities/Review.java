@@ -16,7 +16,7 @@ public class Review {
 	}
 	
 	public Review(ReviewDto reviewDto) {
-		this(reviewDto.name, reviewDto.review, new Rating(reviewDto.rating));
+		this(reviewDto.getName(), reviewDto.getReview(), new Rating(reviewDto.getRating()));
 	}
 
 	public Rating getRating() {
@@ -24,12 +24,7 @@ public class Review {
 	}
 	
 	public ReviewDto asDto() {
-		ReviewDto reviewDto = new ReviewDto();
-		
-		reviewDto.name = this.name;
-		reviewDto.review = this.review;
-		reviewDto.rating = this.rating.asDouble();
-		
+		ReviewDto reviewDto = new ReviewDto(this.name, this.review, this.rating.asDouble());
 		return reviewDto;
 	}
 	
