@@ -17,6 +17,14 @@ public class MealDAO {
 	private String description;
 	private Double price;
 	
+	public MealDAO() {}
+
+	public MealDAO(String name, String description, Double price) {
+		this.name = name;
+		this.description = description;
+		this.price = price;
+	}
+
 	public MealDAO(MealDto mealDto) {
 		this.name = mealDto.getName();
 		this.description = mealDto.getDescription();

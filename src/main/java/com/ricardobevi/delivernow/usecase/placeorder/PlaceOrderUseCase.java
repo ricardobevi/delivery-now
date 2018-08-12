@@ -1,6 +1,5 @@
 package com.ricardobevi.delivernow.usecase.placeorder;
 
-import com.ricardobevi.delivernow.dto.OrderStatusDto;
 import com.ricardobevi.delivernow.entities.Order;
 import com.ricardobevi.delivernow.entities.OrderStatus;
 import com.ricardobevi.delivernow.entities.Restaurant;
@@ -23,6 +22,8 @@ public class PlaceOrderUseCase {
 		Order order = new Order(this.placeOrderUseCaseinput.getOrderDto());
 		
 		OrderStatus orderStatus = restaurant.placeOrder(order);
+		
+		this.restaurantGateway.save(restaurant.asDto());
 		
 		return new PlaceOrderUseCaseOutput(orderStatus.asDto());
 	}

@@ -29,7 +29,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.ricardobevi.delivernow.MainApplication;
-import com.ricardobevi.delivernow.dto.ReviewDto;
+import com.ricardobevi.delivernow.controllers.requests.ReviewRequest;
 import com.ricardobevi.delivernow.gateways.model.RestaurantDAO;
 import com.ricardobevi.delivernow.gateways.model.RestaurantRepository;
 
@@ -81,9 +81,9 @@ public class ReviewControllerTest {
     @Test
     public void addReview() throws Exception {
     	
-    	ReviewDto reviewDto = new ReviewDto("Ricky", "Another Review", 1.0);
+    	ReviewRequest reviewRequest = new ReviewRequest("Ricky", "Another Review", 1.0);
     	
-        String reviewJson = json(reviewDto);
+        String reviewJson = json(reviewRequest);
 
         this.mockMvc.perform(post("/review/" + this.restaurantDAOList.get(0).getId().longValue())
                 .contentType(contentType)
@@ -101,9 +101,9 @@ public class ReviewControllerTest {
     @Test
     public void addReviewWithHighRating() throws Exception {
     	
-    	ReviewDto reviewDto = new ReviewDto("Ricky", "Another Review", 20.0);
+    	ReviewRequest reviewRequest = new ReviewRequest("Ricky", "Another Review", 20.0);
     	
-        String reviewJson = json(reviewDto);
+        String reviewJson = json(reviewRequest);
 
         this.mockMvc.perform(post("/review/" + this.restaurantDAOList.get(0).getId().longValue())
                 .contentType(contentType)
@@ -117,9 +117,9 @@ public class ReviewControllerTest {
     @Test
     public void addReviewWithLowRating() throws Exception {
     	
-    	ReviewDto reviewDto = new ReviewDto("Ricky", "Another Review", 0.5);
+    	ReviewRequest reviewRequest = new ReviewRequest("Ricky", "Another Review", 0.5);
     	
-        String reviewJson = json(reviewDto);
+        String reviewJson = json(reviewRequest);
 
         this.mockMvc.perform(post("/review/" + this.restaurantDAOList.get(0).getId().longValue())
                 .contentType(contentType)
@@ -133,9 +133,9 @@ public class ReviewControllerTest {
     @Test
     public void addReviewWithIncompleteReview() throws Exception {
     	
-    	ReviewDto reviewDto = new ReviewDto("Ricky", null, 1.0);
+    	ReviewRequest reviewRequest = new ReviewRequest("Ricky", null, 1.0);
     	
-        String reviewJson = json(reviewDto);
+        String reviewJson = json(reviewRequest);
 
         this.mockMvc.perform(post("/review/" + this.restaurantDAOList.get(0).getId().longValue())
                 .contentType(contentType)
@@ -164,9 +164,9 @@ public class ReviewControllerTest {
     @Test
     public void addReviewToMissingRestaurant() throws Exception {
     	
-    	ReviewDto reviewDto = new ReviewDto("Ricky", "Another Review", 1.0);
+    	ReviewRequest reviewRequest = new ReviewRequest("Ricky", "Another Review", 1.0);
     	
-        String reviewJson = json(reviewDto);
+        String reviewJson = json(reviewRequest);
 
         this.mockMvc.perform(post("/review/2000")
                 .contentType(contentType)

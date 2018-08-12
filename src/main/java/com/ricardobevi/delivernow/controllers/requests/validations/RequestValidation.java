@@ -2,7 +2,7 @@ package com.ricardobevi.delivernow.controllers.requests.validations;
 
 import org.springframework.http.ResponseEntity;
 
-public interface Validation {
+public interface RequestValidation {
 
 	public boolean isValid();
 	

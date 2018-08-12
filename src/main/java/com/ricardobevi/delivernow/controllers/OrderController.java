@@ -9,52 +9,50 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ricardobevi.delivernow.controllers.requests.ErrorResponse;
-import com.ricardobevi.delivernow.controllers.requests.ReviewRequest;
+import com.ricardobevi.delivernow.controllers.requests.OrderRequest;
 import com.ricardobevi.delivernow.controllers.requests.validations.RequestValidation;
 import com.ricardobevi.delivernow.gateways.RestaurantGateway;
 import com.ricardobevi.delivernow.gateways.exceptions.RestaurantNotFoundException;
-import com.ricardobevi.delivernow.usecase.addreview.AddReviewUseCase;
-import com.ricardobevi.delivernow.usecase.addreview.AddReviewUseCaseInput;
-import com.ricardobevi.delivernow.usecase.addreview.AddReviewUseCaseOutput;
+import com.ricardobevi.delivernow.usecase.placeorder.PlaceOrderUseCase;
+import com.ricardobevi.delivernow.usecase.placeorder.PlaceOrderUseCaseInput;
+import com.ricardobevi.delivernow.usecase.placeorder.PlaceOrderUseCaseOutput;
 
 @RestController
-@RequestMapping("/review/{restaurantId}")
-public class ReviewController {
-	
+@RequestMapping("/order/{restaurantId}")
+public class OrderController {
+
 	@Autowired
 	RestaurantGateway restaurantGateway;
-	
+
 	@PostMapping
-    public ResponseEntity<Object> review(@PathVariable Long restaurantId, @RequestBody ReviewRequest reviewRequest) {
-		
-		RequestValidation requestValidation = reviewRequest.validate();
-		
-		if(requestValidation.isValid()) {
-		
-			AddReviewUseCaseInput addReviewUseCaseInput =
-					new AddReviewUseCaseInput(restaurantId, reviewRequest.asDto(), restaurantGateway);
-	
+	public ResponseEntity<Object> placeOrder(@PathVariable Long restaurantId, @RequestBody OrderRequest orderRequest) {
+
+		RequestValidation requestValidation = orderRequest.validate();
+
+		if (requestValidation.isValid()) {
+			
+			PlaceOrderUseCaseInput placeOrderUseCaseinput = new PlaceOrderUseCaseInput(
+					restaurantId, 
+					orderRequest.asDto(), 
+					restaurantGateway
+			);
+
 			try {
 				
-				AddReviewUseCaseOutput addReviewUseCaseOutput = new AddReviewUseCase(addReviewUseCaseInput).execute();
+				PlaceOrderUseCaseOutput placeOrderUseCaseOutput = new PlaceOrderUseCase(placeOrderUseCaseinput).execute();
 				
-				return ResponseEntity.ok(addReviewUseCaseOutput.getRestaurantDto());
-				
+				return ResponseEntity.ok(placeOrderUseCaseOutput.getOrderStatusDto());
+
 			} catch (RestaurantNotFoundException restaurantNotFoundException) {
-				
+
 				return ResponseEntity.badRequest().body(new ErrorResponse(restaurantNotFoundException.message()));
-				
+
 			}
-			
-			
 			
 		} else {
 			return requestValidation.response();
 		}
-		
-		
-    }
-	
-	
-	
+
+	}
+
 }

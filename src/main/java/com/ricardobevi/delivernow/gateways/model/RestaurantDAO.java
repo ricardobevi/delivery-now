@@ -25,7 +25,19 @@ public class RestaurantDAO {
 	@OneToMany(cascade=CascadeType.ALL)
 	private List<MealDAO> meals = new ArrayList<MealDAO>();
 	
+	@OneToMany(cascade=CascadeType.ALL)
+	private List<OrderDAO> orders = new ArrayList<OrderDAO>();
+	
 	public RestaurantDAO() {}
+	
+	public RestaurantDAO(Long id, List<ReviewDAO> reviews, List<MealDAO> meals, List<OrderDAO> orders) {
+		this.id = id;
+		this.reviews = reviews;
+		this.meals = meals;
+		this.orders = orders;
+	}
+
+
 
 	public Long getId() {
 		return id;

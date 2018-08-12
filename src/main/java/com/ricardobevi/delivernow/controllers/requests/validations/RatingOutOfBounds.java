@@ -4,7 +4,7 @@ import org.springframework.http.ResponseEntity;
 
 import com.ricardobevi.delivernow.controllers.requests.ErrorResponse;
 
-public class RatingOutOfBounds implements Validation {
+public class RatingOutOfBounds implements RequestValidation {
 
 	public boolean isValid() {
 		return false;

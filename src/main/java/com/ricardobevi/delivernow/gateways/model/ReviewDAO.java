@@ -18,7 +18,11 @@ public class ReviewDAO {
     private String review;
     private Double rating;
     
-    public ReviewDAO() {}
+    public ReviewDAO() {
+    	this.name = "";
+    	this.review = "";
+    	this.rating = 1.0;
+    }
     
 	public ReviewDAO(ReviewDto reviewDto) {
 		this.name = reviewDto.getName();

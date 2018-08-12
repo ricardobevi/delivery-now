@@ -4,7 +4,7 @@ import org.springframework.http.ResponseEntity;
 
 import com.ricardobevi.delivernow.controllers.requests.ErrorResponse;
 
-public class MissingOrNullParameter implements Validation {
+public class MissingOrNullParameter implements RequestValidation {
 
 	public boolean isValid() {
 		return false;
