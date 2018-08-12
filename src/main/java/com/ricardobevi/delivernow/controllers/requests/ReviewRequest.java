@@ -14,30 +14,12 @@ public class ReviewRequest {
 	
 	public ReviewRequest() {}
 	
-	public ReviewRequest(String name, String review, Double rating) {
-		this.name = name;
-		this.review = review;
-		this.rating = rating;
-	}
-
-	public String getName() {
-		return name;
-	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	public String getReview() {
-		return review;
-	}
-
 	public void setReview(String review) {
 		this.review = review;
-	}
-
-	public Double getRating() {
-		return rating;
 	}
 
 	public void setRating(Double rating) {
