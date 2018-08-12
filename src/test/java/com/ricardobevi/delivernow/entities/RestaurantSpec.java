@@ -27,7 +27,7 @@ public class RestaurantSpec {
 		
 		restaurant.addReview(review);
 		
-		Assert.assertTrue(restaurant.computeAverageRating().equals(new Rating(2.0)));
+		Assert.assertTrue(restaurant.rating().equals(new Rating(2.0)));
 	}
 	
 	@Test
@@ -42,7 +42,7 @@ public class RestaurantSpec {
 		restaurant.addReview(review1);
 		restaurant.addReview(review2);
 		
-		Assert.assertTrue(restaurant.computeAverageRating().equals(new Rating(3.5)));
+		Assert.assertTrue(restaurant.rating().equals(new Rating(3.5)));
 	}
 	
 }

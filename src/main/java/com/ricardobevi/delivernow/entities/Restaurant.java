@@ -8,10 +8,11 @@ import com.ricardobevi.delivernow.dto.RestaurantDto;
 
 public class Restaurant {
 
-	private Long restaurantId;
+	private final Long restaurantId;
 	private List<Review> reviewList;
 	
 	public Restaurant() {
+		restaurantId = null;
 		this.reviewList = new ArrayList<Review>();
 	}
 	
@@ -28,14 +29,14 @@ public class Restaurant {
 		return reviewList.size();
 	}
 
-	public Rating computeAverageRating() { 
+	public Rating rating() { 
 		return Rating.average( reviewList.stream().map(Review::getRating).collect(Collectors.toList()) );
 	}
 
 	public RestaurantDto asDto() {
 		RestaurantDto restaurantDto = new RestaurantDto(
 				this.restaurantId,
-				this.computeAverageRating().asDouble(),
+				this.rating().asDouble(),
 				reviewList.stream().map(Review::asDto).collect(Collectors.toList())
 		);
 		
