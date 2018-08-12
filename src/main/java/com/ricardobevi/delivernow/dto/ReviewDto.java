@@ -2,18 +2,26 @@ package com.ricardobevi.delivernow.dto;
 
 public class ReviewDto {
 
-	public String name;
-	public String review;
-	public Double rating;
-	
-	public ReviewDto() {}
+	private final String name;
+	private final String review;
+	private final Double rating;
 	
 	public ReviewDto(String name, String review, Double rating) {
 		this.name = name;
 		this.review = review;
 		this.rating = rating;
 	}
-	
-	
+
+	public String getName() {
+		return name;
+	}
+
+	public Double getRating() {
+		return rating;
+	}
+
+	public String getReview() {
+		return review;
+	}
 	
 }
