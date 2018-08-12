@@ -7,6 +7,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.ricardobevi.delivernow.gateways.DatabaseRestaurantGateway;
+import com.ricardobevi.delivernow.gateways.ETAGateway;
+import com.ricardobevi.delivernow.gateways.GoogleMapsETAGateway;
 import com.ricardobevi.delivernow.gateways.RestaurantGateway;
 import com.ricardobevi.delivernow.gateways.model.RestaurantDAO;
 import com.ricardobevi.delivernow.gateways.model.RestaurantRepository;
@@ -17,6 +19,11 @@ public class BeansConfig {
 	@Bean
 	public RestaurantGateway DatabaseRestaurantGateway() {
 		return new DatabaseRestaurantGateway();
+	}
+	
+	@Bean
+	public ETAGateway GoogleMapsETAGateway() {
+		return new GoogleMapsETAGateway();
 	}
 
 	@Bean

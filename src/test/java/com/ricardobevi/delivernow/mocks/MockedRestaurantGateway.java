@@ -36,7 +36,8 @@ public class MockedRestaurantGateway implements RestaurantGateway {
 							"221b Baker Street",
 							new LatLongLocationDto(0.0, 0.0)
 						)
-				)
+				),
+				new LatLongLocationDto(-34.645954, -58.592202) //-34.645954, -58.592202
 		);
 	}
 

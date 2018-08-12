@@ -13,6 +13,7 @@ public class Restaurant {
 	private List<Review> reviews;
 	private List<Order> orders;
 	private List<Meal> meals;
+	private LatLongLocation location;
 	
 	public Restaurant(List<Meal> meals) {
 		restaurantId = null;
@@ -26,6 +27,7 @@ public class Restaurant {
 		this.reviews = restaurantDto.getReviews().stream().map(reviewDto -> new Review(reviewDto)).collect(Collectors.toList());
 		this.meals = restaurantDto.getMeals().stream().map(mealDto -> new Meal(mealDto)).collect(Collectors.toList());
 		this.orders = new ArrayList<Order>();
+		this.location = new LatLongLocation(restaurantDto.getLocation());
 	}
 
 	public void addReview(Review review) {
@@ -61,7 +63,8 @@ public class Restaurant {
 				this.rating().asDouble(),
 				reviews.stream().map(Review::asDto).collect(Collectors.toList()),
 				meals.stream().map(Meal::asDto).collect(Collectors.toList()),
-				orders.stream().map(Order::asDto).collect(Collectors.toList())
+				orders.stream().map(Order::asDto).collect(Collectors.toList()),
+				this.location.asDto()
 		);
 		
 		return restaurantDto;
