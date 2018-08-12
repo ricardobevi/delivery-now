@@ -9,11 +9,16 @@ import com.ricardobevi.delivernow.dto.RestaurantDto;
 public class Restaurant {
 
 	private final Long restaurantId;
-	private List<Review> reviewList;
 	
-	public Restaurant() {
+	private List<Review> reviewList;
+	private List<Order> placedOrders;
+	private List<Meal> meals;
+	
+	public Restaurant(List<Meal> meals) {
 		restaurantId = null;
 		this.reviewList = new ArrayList<Review>();
+		this.placedOrders = new ArrayList<Order>();
+		this.meals = meals;
 	}
 	
 	public Restaurant(RestaurantDto restaurantDto) {
@@ -32,6 +37,21 @@ public class Restaurant {
 	public Rating rating() { 
 		return Rating.average( reviewList.stream().map(Review::getRating).collect(Collectors.toList()) );
 	}
+	
+	public OrderStatus placeOrder(Order order) {
+		
+		if( order.canBeFullfilledWith(meals) && order.checkPrice() ) {
+			
+			this.placedOrders.add(order);
+			return new OrderPlaced();
+			
+		} else {
+			
+			return new OrderError();
+			
+		}
+		
+	}
 
 	public RestaurantDto asDto() {
 		RestaurantDto restaurantDto = new RestaurantDto(
@@ -41,6 +61,9 @@ public class Restaurant {
 		);
 		
 		return restaurantDto;
-	}  
+	}
+
+
+
 
 }
