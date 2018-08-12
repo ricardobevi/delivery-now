@@ -45,6 +45,11 @@ public class RestaurantReviewUseCaseSpec {
 
 		public void save(RestaurantDto asDto) {
 		}
+
+
+		@Override
+		public void delete(RestaurantDto restaurantDto) {			
+		}
 		
 	}
 	
