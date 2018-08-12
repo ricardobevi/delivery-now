@@ -21,9 +21,9 @@ public class ReviewDAO {
     public ReviewDAO() {}
     
 	public ReviewDAO(ReviewDto reviewDto) {
-		this.name = reviewDto.name;
-		this.review = reviewDto.review;
-		this.rating = reviewDto.rating;
+		this.name = reviewDto.getName();
+		this.review = reviewDto.getReview();
+		this.rating = reviewDto.getRating();
 	}
 
     
