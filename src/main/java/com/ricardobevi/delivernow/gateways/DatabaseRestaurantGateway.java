@@ -26,7 +26,7 @@ public class DatabaseRestaurantGateway implements RestaurantGateway {
 		
 		restaurantRepository.save(restaurantDao);
 	}
-
+	
 	@Transactional
 	public void delete(RestaurantDto restaurantDto) {
 		restaurantRepository.deleteById(restaurantDto.getId());

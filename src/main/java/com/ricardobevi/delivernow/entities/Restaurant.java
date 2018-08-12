@@ -8,38 +8,66 @@ import com.ricardobevi.delivernow.dto.RestaurantDto;
 
 public class Restaurant {
 
-	private Long restaurantId;
-	private List<Review> reviewList;
+	private final Long restaurantId;
 	
-	public Restaurant() {
-		this.reviewList = new ArrayList<Review>();
+	private List<Review> reviews;
+	private List<Order> orders;
+	private List<Meal> meals;
+	
+	public Restaurant(List<Meal> meals) {
+		restaurantId = null;
+		this.reviews = new ArrayList<Review>();
+		this.orders = new ArrayList<Order>();
+		this.meals = meals;
 	}
 	
 	public Restaurant(RestaurantDto restaurantDto) {
 		this.restaurantId = restaurantDto.getId();
-		this.reviewList = restaurantDto.getReviews().stream().map(reviewDto -> new Review(reviewDto)).collect(Collectors.toList());
+		this.reviews = restaurantDto.getReviews().stream().map(reviewDto -> new Review(reviewDto)).collect(Collectors.toList());
+		this.meals = restaurantDto.getMeals().stream().map(mealDto -> new Meal(mealDto)).collect(Collectors.toList());
+		this.orders = new ArrayList<Order>();
 	}
 
 	public void addReview(Review review) {
-		reviewList.add(review);
+		reviews.add(review);
 	}
 
 	public int countReviews() {
-		return reviewList.size();
+		return reviews.size();
 	}
 
-	public Rating computeAverageRating() { 
-		return Rating.average( reviewList.stream().map(Review::getRating).collect(Collectors.toList()) );
+	public Rating rating() { 
+		return Rating.average( reviews.stream().map(Review::getRating).collect(Collectors.toList()) );
+	}
+	
+	public OrderStatus placeOrder(Order order) {
+		
+		if( order.canBeFullfilledWith(meals) && order.checkPrice() ) {
+			
+			this.orders.add(order);
+			return new OrderPlaced();
+			
+		} else {
+			
+			return new OrderError();
+			
+		}
+		
 	}
 
 	public RestaurantDto asDto() {
 		RestaurantDto restaurantDto = new RestaurantDto(
 				this.restaurantId,
-				this.computeAverageRating().asDouble(),
-				reviewList.stream().map(Review::asDto).collect(Collectors.toList())
+				this.rating().asDouble(),
+				reviews.stream().map(Review::asDto).collect(Collectors.toList()),
+				meals.stream().map(Meal::asDto).collect(Collectors.toList()),
+				orders.stream().map(Order::asDto).collect(Collectors.toList())
 		);
 		
 		return restaurantDto;
-	}  
+	}
+
+
+
 
 }

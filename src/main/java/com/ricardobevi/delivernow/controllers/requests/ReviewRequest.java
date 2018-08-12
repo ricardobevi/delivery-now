@@ -2,11 +2,11 @@ package com.ricardobevi.delivernow.controllers.requests;
 
 import com.ricardobevi.delivernow.controllers.requests.validations.MissingOrNullParameter;
 import com.ricardobevi.delivernow.controllers.requests.validations.RatingOutOfBounds;
-import com.ricardobevi.delivernow.controllers.requests.validations.Validation;
+import com.ricardobevi.delivernow.controllers.requests.validations.RequestValidation;
 import com.ricardobevi.delivernow.controllers.requests.validations.ValidationOk;
 import com.ricardobevi.delivernow.dto.ReviewDto;
 
-public class ReviewRequest {
+public class ReviewRequest implements Request {
 
 	private String name;
 	private String review;
@@ -14,33 +14,10 @@ public class ReviewRequest {
 	
 	public ReviewRequest() {}
 	
+
 	public ReviewRequest(String name, String review, Double rating) {
 		this.name = name;
 		this.review = review;
-		this.rating = rating;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getReview() {
-		return review;
-	}
-
-	public void setReview(String review) {
-		this.review = review;
-	}
-
-	public Double getRating() {
-		return rating;
-	}
-
-	public void setRating(Double rating) {
 		this.rating = rating;
 	}
 	
@@ -48,7 +25,7 @@ public class ReviewRequest {
 		return new ReviewDto(this.name, this.review, this.rating);
 	}
 	
-	public Validation validate() {
+	public RequestValidation validate() {
 		if(name == null || review == null || rating == null ) {
 			return new MissingOrNullParameter();
 		} else if ( rating < 1.0 || rating > 5.0 ) {
@@ -56,6 +33,33 @@ public class ReviewRequest {
 		}
 		
 		return new ValidationOk();
+	}
+
+	public String getName() {
+		return name;
+	}
+
+
+	public String getReview() {
+		return review;
+	}
+
+
+	public Double getRating() {
+		return rating;
+	}
+
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setReview(String review) {
+		this.review = review;
+	}
+
+	public void setRating(Double rating) {
+		this.rating = rating;
 	}
 	
 	

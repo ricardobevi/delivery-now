@@ -4,14 +4,15 @@ import org.springframework.http.ResponseEntity;
 
 import com.ricardobevi.delivernow.controllers.requests.ErrorResponse;
 
-public class RatingOutOfBounds implements RequestValidation {
+public class WrongCoordinates implements RequestValidation {
 
 	public boolean isValid() {
 		return false;
 	}
 
+	@Override
 	public ResponseEntity<Object> response() {
-		return ResponseEntity.badRequest().body(new ErrorResponse("Rating out of bounds. Should be between 1.0 and 5.0."));
+		return ResponseEntity.badRequest().body(new ErrorResponse("Wrong Coordinates"));
 	}
 
 }

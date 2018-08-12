@@ -29,15 +29,19 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.ricardobevi.delivernow.MainApplication;
-import com.ricardobevi.delivernow.controllers.requests.ReviewRequest;
+import com.ricardobevi.delivernow.controllers.requests.MealRequest;
+import com.ricardobevi.delivernow.controllers.requests.OrderRequest;
+import com.ricardobevi.delivernow.gateways.model.MealDAO;
+import com.ricardobevi.delivernow.gateways.model.OrderDAO;
 import com.ricardobevi.delivernow.gateways.model.RestaurantDAO;
 import com.ricardobevi.delivernow.gateways.model.RestaurantRepository;
+import com.ricardobevi.delivernow.gateways.model.ReviewDAO;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = MainApplication.class)
 @WebAppConfiguration
-public class ReviewControllerTest {
-		
+public class OrderControllerTest {
+
 	private MediaType contentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
 	        MediaType.APPLICATION_JSON.getSubtype(),
 	        Charset.forName("utf8"));
@@ -72,105 +76,135 @@ public class ReviewControllerTest {
 	public void setup() throws Exception {
 	    this.mockMvc = webAppContextSetup(webApplicationContext).build();
 	    
-	    restaurantRepository.deleteAllInBatch();
+	    restaurantRepository.deleteAll();
 	    
-	    this.restaurantDAOList.add(restaurantRepository.save(new RestaurantDAO()));
+	    this.restaurantDAOList.add(restaurantRepository.save(
+	    		new RestaurantDAO(
+	    				1L,
+	    				Arrays.asList(new ReviewDAO()),
+	    				Arrays.asList(new MealDAO("Potatoes", "Potatoes", 2.0)),
+	    				Arrays.asList(new OrderDAO())
+	    		)
+	    ));
 	    
 	}
 	
     @Test
-    public void addReview() throws Exception {
+    public void placeOrder() throws Exception {
     	
-    	ReviewRequest reviewRequest = new ReviewRequest("Ricky", "Another Review", 1.0);
+    	Long restaurantId = this.restaurantDAOList.get(0).getId().longValue();
     	
-        String reviewJson = json(reviewRequest);
-
-        this.mockMvc.perform(post("/review/" + this.restaurantDAOList.get(0).getId().longValue())
+    	OrderRequest orderRequest = new OrderRequest(
+    			Arrays.asList(new MealRequest("Potatoes", "Potatoes", 2.0)),
+    			2.0,
+    			"221b Baker Street",
+    			"51.523767,-0.1607498"
+    	);
+    	
+        String orderJson = json(orderRequest);
+    	
+        this.mockMvc.perform(post("/order/" + restaurantId)
                 .contentType(contentType)
-                .content(reviewJson))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(contentType))
-                .andExpect(jsonPath("$.id", is(this.restaurantDAOList.get(0).getId().intValue())))
-                .andExpect(jsonPath("$.rating", is(1.0)))
-                .andExpect(jsonPath("$.reviews[0].name", is("Ricky")))
-                .andExpect(jsonPath("$.reviews[0].review", is("Another Review")))
-                .andExpect(jsonPath("$.reviews[0].rating", is(1.0)))
+                .content(orderJson))
+        		.andExpect(status().isOk())
+        		.andExpect(jsonPath("$.status", is("Order placed successfully")))
                 ;
+        
+        
     }
     
     @Test
-    public void addReviewWithHighRating() throws Exception {
+    public void placeOrderRestaurantCantFullfill() throws Exception {
     	
-    	ReviewRequest reviewRequest = new ReviewRequest("Ricky", "Another Review", 20.0);
+    	Long restaurantId = this.restaurantDAOList.get(0).getId().longValue();
     	
-        String reviewJson = json(reviewRequest);
-
-        this.mockMvc.perform(post("/review/" + this.restaurantDAOList.get(0).getId().longValue())
+    	OrderRequest orderRequest = new OrderRequest(
+    			Arrays.asList(new MealRequest("Magic Potatoes", "Potatoes", 2.0)),
+    			2.0,
+    			"221b Baker Street",
+    			"51.523767,-0.1607498"
+    	);
+    	
+        String orderJson = json(orderRequest);
+    	
+        this.mockMvc.perform(post("/order/" + restaurantId)
                 .contentType(contentType)
-                .content(reviewJson))
-                .andExpect(status().isBadRequest())
-                .andExpect(content().contentType(contentType))
-                .andExpect(jsonPath("$.message", is("Rating out of bounds. Should be between 1.0 and 5.0.")))
+                .content(orderJson))
+			    .andExpect(status().isBadRequest())
+			    .andExpect(content().contentType(contentType))
+        		.andExpect(jsonPath("$.status", is("The restaurant can't fullfill the order")))
                 ;
+        
+        
     }
     
     @Test
-    public void addReviewWithLowRating() throws Exception {
+    public void placeOrderWithFieldMissing() throws Exception {
     	
-    	ReviewRequest reviewRequest = new ReviewRequest("Ricky", "Another Review", 0.5);
+    	Long restaurantId = this.restaurantDAOList.get(0).getId().longValue();
     	
-        String reviewJson = json(reviewRequest);
-
-        this.mockMvc.perform(post("/review/" + this.restaurantDAOList.get(0).getId().longValue())
+    	OrderRequest orderRequest = new OrderRequest(
+    			Arrays.asList(new MealRequest("Potatoes", "Potatoes", 2.0)),
+    			null,
+    			"221b Baker Street",
+    			"51.523767,-0.1607498"
+    	);
+    	
+        String orderJson = json(orderRequest);
+    	
+        this.mockMvc.perform(post("/order/" + restaurantId)
                 .contentType(contentType)
-                .content(reviewJson))
-                .andExpect(status().isBadRequest())
-                .andExpect(content().contentType(contentType))
-                .andExpect(jsonPath("$.message", is("Rating out of bounds. Should be between 1.0 and 5.0.")))
+                .content(orderJson))
+			    .andExpect(status().isBadRequest())
+			    .andExpect(content().contentType(contentType))
+			    .andExpect(jsonPath("$.message", is("Something is wrong with your request. There is a missing or null parameter.")))
                 ;
-    }
-    
-    @Test
-    public void addReviewWithIncompleteReview() throws Exception {
-    	
-    	ReviewRequest reviewRequest = new ReviewRequest("Ricky", null, 1.0);
-    	
-        String reviewJson = json(reviewRequest);
-
-        this.mockMvc.perform(post("/review/" + this.restaurantDAOList.get(0).getId().longValue())
-                .contentType(contentType)
-                .content(reviewJson))
-                .andExpect(status().isBadRequest())
-                .andExpect(content().contentType(contentType))
-                .andExpect(jsonPath("$.message", is("Something is wrong with your request. There is a missing or null parameter.")))
-                ;
+        
+        
     }
     
     
     @Test
-    public void addReviewWithInvalidJson() throws Exception {
+    public void placeOrderWithWrongLatLongParam() throws Exception {
     	
-        String reviewJson = "{\"hello\": \"im a malformed entry\"}";
-
-        this.mockMvc.perform(post("/review/" + this.restaurantDAOList.get(0).getId().longValue())
+    	Long restaurantId = this.restaurantDAOList.get(0).getId().longValue();
+    	
+    	OrderRequest orderRequest = new OrderRequest(
+    			Arrays.asList(new MealRequest("Potatoes", "Potatoes", 2.0)),
+    			2.0,
+    			"221b Baker Street",
+    			"51.523767,-1110.1607498"
+    	);
+    	
+        String orderJson = json(orderRequest);
+    	
+        this.mockMvc.perform(post("/order/" + restaurantId)
                 .contentType(contentType)
-                .content(reviewJson))
-                .andExpect(status().isBadRequest())
-                .andExpect(content().contentType(contentType))
-                .andExpect(jsonPath("$.message", is("Something is wrong with your request. There is a missing or null parameter.")))
+                .content(orderJson))
+			    .andExpect(status().isBadRequest())
+			    .andExpect(content().contentType(contentType))
+			    .andExpect(jsonPath("$.message", is("Wrong Coordinates")))
                 ;
+        
+        
     }
     
+    
     @Test
-    public void addReviewToMissingRestaurant() throws Exception {
+    public void restaurantDoesntExists() throws Exception {
     	
-    	ReviewRequest reviewRequest = new ReviewRequest("Ricky", "Another Review", 1.0);
+    	OrderRequest orderRequest = new OrderRequest(
+    			Arrays.asList(new MealRequest("Potatoes", "Potatoes", 2.0)),
+    			2.0,
+    			"221b Baker Street",
+    			"51.523767,-0.1607498"
+    	);
     	
-        String reviewJson = json(reviewRequest);
+        String orderJson = json(orderRequest);
 
-        this.mockMvc.perform(post("/review/2000")
+        this.mockMvc.perform(post("/order/2000")
                 .contentType(contentType)
-                .content(reviewJson))
+                .content(orderJson))
                 .andExpect(status().isBadRequest())
                 .andExpect(content().contentType(contentType))
                 .andExpect(jsonPath("$.message", is("Couldn't find restaurant with id: 2000")))
@@ -184,5 +218,5 @@ public class ReviewControllerTest {
                 o, MediaType.APPLICATION_JSON, mockHttpOutputMessage);
         return mockHttpOutputMessage.getBodyAsString();
     }
-    
+	
 }
