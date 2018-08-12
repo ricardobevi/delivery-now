@@ -49,7 +49,8 @@ public class RestaurantDAO {
 				id,
 				1.0,
 				reviews.stream().map(ReviewDAO::asDto).collect(Collectors.toList()),
-				meals.stream().map(MealDAO::asDto).collect(Collectors.toList())
+				meals.stream().map(MealDAO::asDto).collect(Collectors.toList()),
+				orders.stream().map(OrderDAO::asDto).collect(Collectors.toList())
 		);
 		
 		return restaurantDto;
@@ -58,6 +59,7 @@ public class RestaurantDAO {
 	public void updateWithDto(RestaurantDto restaurantDto) {
 		this.reviews = restaurantDto.getReviews().stream().map(reviewDto -> new ReviewDAO(reviewDto)).collect(Collectors.toList());
 		this.meals = restaurantDto.getMeals().stream().map(mealDto -> new MealDAO(mealDto)).collect(Collectors.toList());
+		this.orders = restaurantDto.getOrders().stream().map(orderDto -> new OrderDAO(orderDto)).collect(Collectors.toList());
 	}
 	
 }

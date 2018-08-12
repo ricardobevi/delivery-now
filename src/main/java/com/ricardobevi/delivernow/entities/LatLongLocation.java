@@ -17,4 +17,8 @@ public class LatLongLocation {
 		this.longitude = latLong.getLongitude();
 	}
 
+	public LatLongLocationDto asDto() {
+		return new LatLongLocationDto(this.latitude, this.longitude);
+	}
+
 }

@@ -2,7 +2,9 @@ package com.ricardobevi.delivernow.mocks;
 
 import java.util.Arrays;
 
+import com.ricardobevi.delivernow.dto.LatLongLocationDto;
 import com.ricardobevi.delivernow.dto.MealDto;
+import com.ricardobevi.delivernow.dto.OrderDto;
 import com.ricardobevi.delivernow.dto.RestaurantDto;
 import com.ricardobevi.delivernow.dto.ReviewDto;
 import com.ricardobevi.delivernow.gateways.RestaurantGateway;
@@ -26,6 +28,14 @@ public class MockedRestaurantGateway implements RestaurantGateway {
 						friedPotatoes,
 						bakedPotatoes,
 						smashedPotatoes
+				),
+				Arrays.asList(
+						new OrderDto(
+							Arrays.asList(friedPotatoes),
+							2.5,
+							"221b Baker Street",
+							new LatLongLocationDto(0.0, 0.0)
+						)
 				)
 		);
 	}

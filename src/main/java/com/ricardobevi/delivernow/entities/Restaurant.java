@@ -11,13 +11,13 @@ public class Restaurant {
 	private final Long restaurantId;
 	
 	private List<Review> reviews;
-	private List<Order> placedOrders;
+	private List<Order> orders;
 	private List<Meal> meals;
 	
 	public Restaurant(List<Meal> meals) {
 		restaurantId = null;
 		this.reviews = new ArrayList<Review>();
-		this.placedOrders = new ArrayList<Order>();
+		this.orders = new ArrayList<Order>();
 		this.meals = meals;
 	}
 	
@@ -25,7 +25,7 @@ public class Restaurant {
 		this.restaurantId = restaurantDto.getId();
 		this.reviews = restaurantDto.getReviews().stream().map(reviewDto -> new Review(reviewDto)).collect(Collectors.toList());
 		this.meals = restaurantDto.getMeals().stream().map(mealDto -> new Meal(mealDto)).collect(Collectors.toList());
-		this.placedOrders = new ArrayList<Order>();
+		this.orders = new ArrayList<Order>();
 	}
 
 	public void addReview(Review review) {
@@ -44,7 +44,7 @@ public class Restaurant {
 		
 		if( order.canBeFullfilledWith(meals) && order.checkPrice() ) {
 			
-			this.placedOrders.add(order);
+			this.orders.add(order);
 			return new OrderPlaced();
 			
 		} else {
@@ -60,7 +60,8 @@ public class Restaurant {
 				this.restaurantId,
 				this.rating().asDouble(),
 				reviews.stream().map(Review::asDto).collect(Collectors.toList()),
-				meals.stream().map(Meal::asDto).collect(Collectors.toList())
+				meals.stream().map(Meal::asDto).collect(Collectors.toList()),
+				orders.stream().map(Order::asDto).collect(Collectors.toList())
 		);
 		
 		return restaurantDto;

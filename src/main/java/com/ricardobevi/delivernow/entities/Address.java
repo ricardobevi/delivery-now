@@ -8,4 +8,9 @@ public class Address {
 		this.address = address;
 	}
 
+	@Override
+	public String toString() {
+		return this.address;
+	}
+
 }

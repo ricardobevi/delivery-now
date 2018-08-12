@@ -28,6 +28,14 @@ public class Order {
 		this.latLongLocation = new LatLongLocation(orderDto.getLatLong());
 	}
 
+	public OrderDto asDto() {
+		return new OrderDto(
+				this.meals.stream().map(Meal::asDto).collect(Collectors.toList()),
+				this.totalCost.asDouble(),
+				this.address.toString(),
+				this.latLongLocation.asDto()
+		);
+	}
 
 	public boolean canBeFullfilledWith(List<Meal> restaurantMeals) {
 		return !meals.stream().filter(orderMeal -> !restaurantMeals.contains(orderMeal)).findFirst().isPresent();
