@@ -1,16 +1,13 @@
 package com.ricardobevi.delivernow.usecase;
 
-import com.ricardobevi.delivernow.dto.RestaurantDto;
+import org.junit.Assert;
+import org.junit.Test;
+
 import com.ricardobevi.delivernow.dto.ReviewDto;
-import com.ricardobevi.delivernow.gateways.RestaurantGateway;
+import com.ricardobevi.delivernow.mocks.MockedRestaurantGateway;
 import com.ricardobevi.delivernow.usecase.addreview.AddReviewUseCase;
 import com.ricardobevi.delivernow.usecase.addreview.AddReviewUseCaseInput;
 import com.ricardobevi.delivernow.usecase.addreview.AddReviewUseCaseOutput;
-
-import java.util.Arrays;
-
-import org.junit.Assert;
-import org.junit.Test;
 
 public class RestaurantReviewUseCaseSpec {
 	
@@ -35,22 +32,6 @@ public class RestaurantReviewUseCaseSpec {
 	}
 	
 
-	private class MockedRestaurantGateway implements RestaurantGateway {
 
-		
-		public RestaurantDto getRestaurantFromId(Long restaurantId) {
-			return new RestaurantDto(1L, 1.0, Arrays.asList(createReviewDto()));
-		}
-
-
-		public void save(RestaurantDto asDto) {
-		}
-
-
-		@Override
-		public void delete(RestaurantDto restaurantDto) {			
-		}
-		
-	}
 	
 }

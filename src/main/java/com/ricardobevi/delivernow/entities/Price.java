@@ -11,6 +11,10 @@ public class Price {
 	public Price sum(Price price) {
 		return new Price(Double.sum(this.value, price.value));
 	}
+	
+	public Double asDouble() {
+		return this.value;
+	}
 
 	@Override
 	public boolean equals(Object obj) {
@@ -28,6 +32,8 @@ public class Price {
 			return false;
 		return true;
 	}
+
+
 
 	
 }

@@ -1,5 +1,7 @@
 package com.ricardobevi.delivernow.entities;
 
+import com.ricardobevi.delivernow.dto.LatLongLocationDto;
+
 public class LatLongLocation {
 
 	private final Double latitude; 
@@ -8,6 +10,11 @@ public class LatLongLocation {
 	public LatLongLocation(Double latitude, Double longitude) {
 		this.latitude = latitude;
 		this.longitude = longitude;
+	}
+
+	public LatLongLocation(LatLongLocationDto latLong) {
+		this.latitude = latLong.getLatitude();
+		this.longitude = latLong.getLongitude();
 	}
 
 }

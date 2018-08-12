@@ -1,6 +1,9 @@
 package com.ricardobevi.delivernow.entities;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
+import com.ricardobevi.delivernow.dto.OrderDto;
 
 public class Order {
 	
@@ -15,6 +18,14 @@ public class Order {
 		this.totalCost = price;
 		this.address = address;
 		this.latLongLocation = latLongLocation;
+	}
+
+
+	public Order(OrderDto orderDto) {
+		this.meals = orderDto.getMeals().stream().map(mealDto -> new Meal(mealDto)).collect(Collectors.toList());
+		this.totalCost = new Price(orderDto.getTotalCost());
+		this.address = new Address(orderDto.getAddress());
+		this.latLongLocation = new LatLongLocation(orderDto.getLatLong());
 	}
 
 

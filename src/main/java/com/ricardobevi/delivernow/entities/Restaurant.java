@@ -10,32 +10,34 @@ public class Restaurant {
 
 	private final Long restaurantId;
 	
-	private List<Review> reviewList;
+	private List<Review> reviews;
 	private List<Order> placedOrders;
 	private List<Meal> meals;
 	
 	public Restaurant(List<Meal> meals) {
 		restaurantId = null;
-		this.reviewList = new ArrayList<Review>();
+		this.reviews = new ArrayList<Review>();
 		this.placedOrders = new ArrayList<Order>();
 		this.meals = meals;
 	}
 	
 	public Restaurant(RestaurantDto restaurantDto) {
 		this.restaurantId = restaurantDto.getId();
-		this.reviewList = restaurantDto.getReviews().stream().map(reviewDto -> new Review(reviewDto)).collect(Collectors.toList());
+		this.reviews = restaurantDto.getReviews().stream().map(reviewDto -> new Review(reviewDto)).collect(Collectors.toList());
+		this.meals = restaurantDto.getMeals().stream().map(mealDto -> new Meal(mealDto)).collect(Collectors.toList());
+		this.placedOrders = new ArrayList<Order>();
 	}
 
 	public void addReview(Review review) {
-		reviewList.add(review);
+		reviews.add(review);
 	}
 
 	public int countReviews() {
-		return reviewList.size();
+		return reviews.size();
 	}
 
 	public Rating rating() { 
-		return Rating.average( reviewList.stream().map(Review::getRating).collect(Collectors.toList()) );
+		return Rating.average( reviews.stream().map(Review::getRating).collect(Collectors.toList()) );
 	}
 	
 	public OrderStatus placeOrder(Order order) {
@@ -57,7 +59,8 @@ public class Restaurant {
 		RestaurantDto restaurantDto = new RestaurantDto(
 				this.restaurantId,
 				this.rating().asDouble(),
-				reviewList.stream().map(Review::asDto).collect(Collectors.toList())
+				reviews.stream().map(Review::asDto).collect(Collectors.toList()),
+				meals.stream().map(Meal::asDto).collect(Collectors.toList())
 		);
 		
 		return restaurantDto;

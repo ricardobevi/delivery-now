@@ -8,7 +8,7 @@ public class AddReviewUseCase {
 	
 	private final AddReviewUseCaseInput addReviewUseCaseInput;
 	
-	private RestaurantGateway restaurantGateway;
+	private final RestaurantGateway restaurantGateway;
 	
 	public AddReviewUseCase(AddReviewUseCaseInput addReviewUseCaseInput) {
 		this.addReviewUseCaseInput = addReviewUseCaseInput;

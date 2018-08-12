@@ -22,6 +22,9 @@ public class RestaurantDAO {
 	@OneToMany(cascade=CascadeType.ALL)
 	private List<ReviewDAO> reviews = new ArrayList<ReviewDAO>();
 
+	@OneToMany(cascade=CascadeType.ALL)
+	private List<MealDAO> meals = new ArrayList<MealDAO>();
+	
 	public RestaurantDAO() {}
 
 	public Long getId() {
@@ -33,7 +36,8 @@ public class RestaurantDAO {
 		RestaurantDto restaurantDto = new RestaurantDto(
 				id,
 				1.0,
-				reviews.stream().map(ReviewDAO::asDto).collect(Collectors.toList())
+				reviews.stream().map(ReviewDAO::asDto).collect(Collectors.toList()),
+				meals.stream().map(MealDAO::asDto).collect(Collectors.toList())
 		);
 		
 		return restaurantDto;
@@ -41,6 +45,7 @@ public class RestaurantDAO {
 
 	public void updateWithDto(RestaurantDto restaurantDto) {
 		this.reviews = restaurantDto.getReviews().stream().map(reviewDto -> new ReviewDAO(reviewDto)).collect(Collectors.toList());
+		this.meals = restaurantDto.getMeals().stream().map(mealDto -> new MealDAO(mealDto)).collect(Collectors.toList());
 	}
 	
 }

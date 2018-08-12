@@ -10,16 +10,12 @@ import org.junit.Test;
 public class RestaurantSpec {
 	
 	private Restaurant restaurantWithMeals;
-	private Meal friedPotatoes;
-	private Meal bakedPotatoes;
-	private Meal smashedPotatoes;
+	private static final Meal friedPotatoes = new Meal("Fried Potatoes", "Yummy potatoes", new Price(2.5));
+	private static final Meal bakedPotatoes = new Meal("Baked Potatoes", "Dummy potatoes", new Price(3.5));
+	private static final Meal smashedPotatoes = new Meal("Smashed Potatoes", "Nice potatoes", new Price(4.5));
 
 	@Before
 	public void setup() {
-		
-		this.friedPotatoes = new Meal("Fried Potatoes", "Yummy potatoes", new Price(2.5));
-		this.bakedPotatoes = new Meal("Baked Potatoes", "Dummy potatoes", new Price(3.5));
-		this.smashedPotatoes = new Meal("Smashed Potatoes", "Nice potatoes", new Price(4.5));
 		
 		List<Meal> mealList = Arrays.asList(friedPotatoes, bakedPotatoes);
 		
