@@ -45,6 +45,7 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-jersey')
 	compile('org.springframework.boot:spring-boot-starter-actuator')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
+	runtime('org.postgresql:postgresql')
 	runtime('com.h2database:h2')
 }
 
