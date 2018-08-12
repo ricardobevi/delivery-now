@@ -95,6 +95,84 @@ public class ReviewControllerTest {
                 ;
     }
     
+    @Test
+    public void addReviewWithHighRating() throws Exception {
+    	
+    	ReviewDto reviewDto = new ReviewDto("Ricky", "Another Review", 20.0);
+    	
+        String reviewJson = json(reviewDto);
+
+        this.mockMvc.perform(post("/review/" + this.restaurantDAOList.get(0).getId().longValue())
+                .contentType(contentType)
+                .content(reviewJson))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentType(contentType))
+                .andExpect(jsonPath("$.message", is("Rating out of bounds. Should be between 1.0 and 5.0.")))
+                ;
+    }
+    
+    @Test
+    public void addReviewWithLowRating() throws Exception {
+    	
+    	ReviewDto reviewDto = new ReviewDto("Ricky", "Another Review", 0.5);
+    	
+        String reviewJson = json(reviewDto);
+
+        this.mockMvc.perform(post("/review/" + this.restaurantDAOList.get(0).getId().longValue())
+                .contentType(contentType)
+                .content(reviewJson))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentType(contentType))
+                .andExpect(jsonPath("$.message", is("Rating out of bounds. Should be between 1.0 and 5.0.")))
+                ;
+    }
+    
+    @Test
+    public void addReviewWithIncompleteReview() throws Exception {
+    	
+    	ReviewDto reviewDto = new ReviewDto("Ricky", null, 1.0);
+    	
+        String reviewJson = json(reviewDto);
+
+        this.mockMvc.perform(post("/review/" + this.restaurantDAOList.get(0).getId().longValue())
+                .contentType(contentType)
+                .content(reviewJson))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentType(contentType))
+                .andExpect(jsonPath("$.message", is("Something is wrong with your request. There is a missing or null parameter.")))
+                ;
+    }
+    
+    
+    @Test
+    public void addReviewWithInvalidJson() throws Exception {
+    	
+        String reviewJson = "{\"hello\": \"im a malformed entry\"}";
+
+        this.mockMvc.perform(post("/review/" + this.restaurantDAOList.get(0).getId().longValue())
+                .contentType(contentType)
+                .content(reviewJson))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentType(contentType))
+                .andExpect(jsonPath("$.message", is("Something is wrong with your request. There is a missing or null parameter.")))
+                ;
+    }
+    
+    @Test
+    public void addReviewToMissingRestaurant() throws Exception {
+    	
+    	ReviewDto reviewDto = new ReviewDto("Ricky", "Another Review", 1.0);
+    	
+        String reviewJson = json(reviewDto);
+
+        this.mockMvc.perform(post("/review/2000")
+                .contentType(contentType)
+                .content(reviewJson))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentType(contentType))
+                .andExpect(jsonPath("$.message", is("Couldn't find restaurant with id: 2000")))
+                ;
+    }
     
     @SuppressWarnings("unchecked")
 	protected String json(Object o) throws IOException {
