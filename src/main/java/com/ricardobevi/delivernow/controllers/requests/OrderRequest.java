@@ -4,8 +4,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.ricardobevi.delivernow.controllers.requests.validations.MissingOrNullParameter;
 import com.ricardobevi.delivernow.controllers.requests.validations.RequestValidation;
 import com.ricardobevi.delivernow.controllers.requests.validations.ValidationOk;
+import com.ricardobevi.delivernow.controllers.requests.validations.WrongCoordinates;
 import com.ricardobevi.delivernow.dto.LatLongLocationDto;
 import com.ricardobevi.delivernow.dto.OrderDto;
 
@@ -28,6 +30,13 @@ public class OrderRequest implements Request {
 
 
 	public RequestValidation validate() {
+		
+		if(meals == null || totalCost == null || address == null || latLong == null ) {
+			return new MissingOrNullParameter();
+		} else if ( !latLong.matches("^[-+]?([1-8]?\\d(\\.\\d+)?|90(\\.0+)?),\\s*[-+]?(180(\\.0+)?|((1[0-7]\\d)|([1-9]?\\d))(\\.\\d+)?)$") ) {
+			return new WrongCoordinates();
+		}
+		
 		return new ValidationOk();
 	}
 	

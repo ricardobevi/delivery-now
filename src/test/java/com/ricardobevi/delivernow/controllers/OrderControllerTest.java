@@ -1,9 +1,9 @@
 package com.ricardobevi.delivernow.controllers;
 
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
@@ -111,6 +111,79 @@ public class OrderControllerTest {
                 ;
         
         
+    }
+    
+    @Test
+    public void placeOrderWithFieldMissing() throws Exception {
+    	
+    	Long restaurantId = this.restaurantDAOList.get(0).getId().longValue();
+    	
+    	OrderRequest orderRequest = new OrderRequest(
+    			Arrays.asList(new MealRequest("Potatoes", "Potatoes", 2.0)),
+    			null,
+    			"221b Baker Street",
+    			"51.523767,-0.1607498"
+    	);
+    	
+        String orderJson = json(orderRequest);
+    	
+        this.mockMvc.perform(post("/order/" + restaurantId)
+                .contentType(contentType)
+                .content(orderJson))
+			    .andExpect(status().isBadRequest())
+			    .andExpect(content().contentType(contentType))
+			    .andExpect(jsonPath("$.message", is("Something is wrong with your request. There is a missing or null parameter.")))
+                ;
+        
+        
+    }
+    
+    
+    @Test
+    public void placeOrderWithWrongLatLongParam() throws Exception {
+    	
+    	Long restaurantId = this.restaurantDAOList.get(0).getId().longValue();
+    	
+    	OrderRequest orderRequest = new OrderRequest(
+    			Arrays.asList(new MealRequest("Potatoes", "Potatoes", 2.0)),
+    			2.0,
+    			"221b Baker Street",
+    			"51.523767,-1110.1607498"
+    	);
+    	
+        String orderJson = json(orderRequest);
+    	
+        this.mockMvc.perform(post("/order/" + restaurantId)
+                .contentType(contentType)
+                .content(orderJson))
+			    .andExpect(status().isBadRequest())
+			    .andExpect(content().contentType(contentType))
+			    .andExpect(jsonPath("$.message", is("Wrong Coordinates")))
+                ;
+        
+        
+    }
+    
+    
+    @Test
+    public void restaurantDoesntExists() throws Exception {
+    	
+    	OrderRequest orderRequest = new OrderRequest(
+    			Arrays.asList(new MealRequest("Potatoes", "Potatoes", 2.0)),
+    			2.0,
+    			"221b Baker Street",
+    			"51.523767,-0.1607498"
+    	);
+    	
+        String orderJson = json(orderRequest);
+
+        this.mockMvc.perform(post("/order/2000")
+                .contentType(contentType)
+                .content(orderJson))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentType(contentType))
+                .andExpect(jsonPath("$.message", is("Couldn't find restaurant with id: 2000")))
+                ;
     }
     
     @SuppressWarnings("unchecked")

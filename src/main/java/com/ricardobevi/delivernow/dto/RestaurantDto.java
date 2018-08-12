@@ -2,12 +2,16 @@ package com.ricardobevi.delivernow.dto;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class RestaurantDto {
 	
 	private final Long id;
 	private final Double rating;
 	private final List<ReviewDto> reviews;
 	private final List<MealDto> meals;
+	
+	@JsonIgnore
 	private final List<OrderDto> orders;
 	
 	public RestaurantDto(Long id, Double rating, List<ReviewDto> reviews, List<MealDto> meals, List<OrderDto> orders) {
