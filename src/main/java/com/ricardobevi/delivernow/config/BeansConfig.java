@@ -58,7 +58,8 @@ public class BeansConfig {
 									new MealDAO(bakedPotatoes)
 							),
 							ciudadelaHood,
-							"commercial.email@mail.com"
+							"commercial.email@mail.com",
+							4.5
 					)
 			);
 		};

@@ -1,5 +1,8 @@
 package com.ricardobevi.delivernow.gateways;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +21,14 @@ public class DatabaseRestaurantGateway implements RestaurantGateway {
 		return restaurantDao.asDto();
 	}
 
+	public List<RestaurantDto> listAll(){
+		return restaurantRepository.findAll().stream().map(RestaurantDAO::asDto).collect(Collectors.toList());
+	}
+	
+	public List<RestaurantDto> listAllWithRatingGreaterThan(Double minRating){
+		return restaurantRepository.findByRatingGreaterThan(minRating).stream().map(RestaurantDAO::asDto).collect(Collectors.toList());
+	}
+	
 	@Transactional
 	public void save(RestaurantDto restaurantDto) {
 		RestaurantDAO restaurantDao = findRestaurantById(restaurantDto.getId());
@@ -36,5 +47,6 @@ public class DatabaseRestaurantGateway implements RestaurantGateway {
 		RestaurantDAO restaurantDao = restaurantRepository.findById(restaurantId).orElseThrow(() -> new RestaurantNotFoundException(restaurantId));
 		return restaurantDao;
 	}
+	
 	
 }
