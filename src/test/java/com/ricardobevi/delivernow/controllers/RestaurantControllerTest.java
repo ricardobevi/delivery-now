@@ -4,6 +4,7 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
@@ -85,7 +86,8 @@ public class RestaurantControllerTest {
 								new MealDAO(MockedRestaurantGateway.bakedPotatoes)
 						),
 						MockedETAGateway.ciudadelaHood,
-						"commercial.email@mail.com"
+						"commercial.email@mail.com",
+						4.0
 				)
 		).getId();
     	
@@ -96,6 +98,46 @@ public class RestaurantControllerTest {
                 ;
         
         assertFalse(restaurantRepository.existsById(restaurantId));
+        
+    }
+    
+    
+    @Test
+    public void listRestaurants() throws Exception {
+    	
+    	Long restaurantId = 1L;
+    	
+        this.mockMvc.perform(get("/restaurant")
+                .contentType(contentType))
+        		.andExpect(status().isOk())
+        		.andExpect(jsonPath("$[0].id", is(restaurantId.intValue())))
+                ;
+        
+    }
+    
+    
+    @Test
+    public void listRestaurantsWithReviewMoreThan4point5() throws Exception {
+    	
+    	Long restaurantId = restaurantRepository.save(
+				new RestaurantDAO(
+						2L,
+						Arrays.asList(new ReviewDAO(1L, "Richard", "Nice place!", 5.0)),
+						Arrays.asList(
+								new MealDAO(MockedRestaurantGateway.friedPotatoes), 
+								new MealDAO(MockedRestaurantGateway.bakedPotatoes)
+						),
+						MockedETAGateway.ciudadelaHood,
+						"commercial.email@mail.com",
+						5.0
+				)
+		).getId();
+    	
+        this.mockMvc.perform(get("/restaurant?minRating=4.5")
+                .contentType(contentType))
+        		.andExpect(status().isOk())
+        		.andExpect(jsonPath("$[0].id", is(restaurantId.intValue())))
+                ;
         
     }
     
