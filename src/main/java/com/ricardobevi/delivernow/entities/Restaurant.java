@@ -14,6 +14,7 @@ public class Restaurant {
 	private List<Order> orders;
 	private List<Meal> meals;
 	private LatLongLocation location;
+	private String commercialEmail;
 	
 	public Restaurant(List<Meal> meals) {
 		restaurantId = null;
@@ -64,7 +65,8 @@ public class Restaurant {
 				reviews.stream().map(Review::asDto).collect(Collectors.toList()),
 				meals.stream().map(Meal::asDto).collect(Collectors.toList()),
 				orders.stream().map(Order::asDto).collect(Collectors.toList()),
-				this.location.asDto()
+				this.location.asDto(),
+				this.commercialEmail
 		);
 		
 		return restaurantDto;

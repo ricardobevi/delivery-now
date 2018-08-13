@@ -11,6 +11,7 @@ public class RestaurantDto {
 	private final List<ReviewDto> reviews;
 	private final List<MealDto> meals;
 	private final LatLongLocationDto location;
+	private final String commercialEmail;
 	
 	@JsonIgnore
 	private final List<OrderDto> orders;
@@ -21,13 +22,15 @@ public class RestaurantDto {
 			List<ReviewDto> reviews, 
 			List<MealDto> meals, 
 			List<OrderDto> orders,
-			LatLongLocationDto location) {
+			LatLongLocationDto location, 
+			String commercialEmail) {
 		this.id = id;
 		this.rating = rating;
 		this.reviews = reviews;
 		this.meals = meals;
 		this.orders = orders;
 		this.location = location;
+		this.commercialEmail = commercialEmail;
 	}
 
 	public Long getId() {
@@ -52,6 +55,10 @@ public class RestaurantDto {
 
 	public LatLongLocationDto getLocation() {
 		return location;
+	}
+
+	public String getCommercialEmail() {
+		return commercialEmail;
 	}
 	
 	

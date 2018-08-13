@@ -14,5 +14,10 @@ public class OrderPlaced implements OrderStatus {
 	public OrderStatusDto asDto(String eta) {
 		return new OrderStatusDto("Order placed successfully", false, eta);
 	}
+
+	@Override
+	public Boolean isOk() {
+		return true;
+	}
 	
 }

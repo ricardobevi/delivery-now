@@ -38,7 +38,8 @@ public class MockedRestaurantGateway implements RestaurantGateway {
 							new LatLongLocationDto(MockedETAGateway.haedoCity)
 						)
 				),
-				new LatLongLocationDto(MockedETAGateway.ciudadelaHood)
+				new LatLongLocationDto(MockedETAGateway.ciudadelaHood),
+				"commercial.email@mail.com"
 		);
 	}
 

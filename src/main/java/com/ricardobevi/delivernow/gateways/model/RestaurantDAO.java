@@ -31,13 +31,21 @@ public class RestaurantDAO {
 	
 	private String latLong;
 	
+	private String comercialEmail;
+	
 	public RestaurantDAO() {}
 	
-	public RestaurantDAO(Long id, List<ReviewDAO> reviews, List<MealDAO> meals, String latLong) {
+	public RestaurantDAO(
+			Long id, 
+			List<ReviewDAO> reviews, 
+			List<MealDAO> meals, 
+			String latLong,
+			String comercialEmail) {
 		this.id = id;
 		this.reviews = reviews;
 		this.meals = meals;
 		this.latLong = latLong;
+		this.comercialEmail = comercialEmail;
 	}
 
 	public Long getId() {
@@ -52,7 +60,8 @@ public class RestaurantDAO {
 				reviews.stream().map(ReviewDAO::asDto).collect(Collectors.toList()),
 				meals.stream().map(MealDAO::asDto).collect(Collectors.toList()),
 				orders.stream().map(OrderDAO::asDto).collect(Collectors.toList()),
-				LatLongLocationDto.parseString(latLong)
+				LatLongLocationDto.parseString(latLong),
+				this.comercialEmail
 		);
 		
 		return restaurantDto;

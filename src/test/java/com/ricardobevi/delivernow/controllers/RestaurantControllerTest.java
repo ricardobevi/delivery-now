@@ -84,7 +84,8 @@ public class RestaurantControllerTest {
 								new MealDAO(MockedRestaurantGateway.friedPotatoes), 
 								new MealDAO(MockedRestaurantGateway.bakedPotatoes)
 						),
-						MockedETAGateway.ciudadelaHood
+						MockedETAGateway.ciudadelaHood,
+						"commercial.email@mail.com"
 				)
 		).getId();
     	
