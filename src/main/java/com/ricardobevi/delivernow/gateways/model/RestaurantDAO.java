@@ -33,11 +33,11 @@ public class RestaurantDAO {
 	
 	public RestaurantDAO() {}
 	
-	public RestaurantDAO(Long id, List<ReviewDAO> reviews, List<MealDAO> meals, List<OrderDAO> orders) {
+	public RestaurantDAO(Long id, List<ReviewDAO> reviews, List<MealDAO> meals, String latLong) {
 		this.id = id;
 		this.reviews = reviews;
 		this.meals = meals;
-		this.orders = orders;
+		this.latLong = latLong;
 	}
 
 	public Long getId() {

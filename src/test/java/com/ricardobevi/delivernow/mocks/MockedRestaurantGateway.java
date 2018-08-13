@@ -7,6 +7,7 @@ import com.ricardobevi.delivernow.dto.MealDto;
 import com.ricardobevi.delivernow.dto.OrderDto;
 import com.ricardobevi.delivernow.dto.RestaurantDto;
 import com.ricardobevi.delivernow.dto.ReviewDto;
+import com.ricardobevi.delivernow.gateways.MockedETAGateway;
 import com.ricardobevi.delivernow.gateways.RestaurantGateway;
 
 public class MockedRestaurantGateway implements RestaurantGateway {
@@ -34,10 +35,10 @@ public class MockedRestaurantGateway implements RestaurantGateway {
 							Arrays.asList(friedPotatoes),
 							2.5,
 							"221b Baker Street",
-							new LatLongLocationDto(0.0, 0.0)
+							new LatLongLocationDto(MockedETAGateway.haedoCity)
 						)
 				),
-				new LatLongLocationDto(-34.645954, -58.592202) //-34.645954, -58.592202
+				new LatLongLocationDto(MockedETAGateway.ciudadelaHood)
 		);
 	}
 

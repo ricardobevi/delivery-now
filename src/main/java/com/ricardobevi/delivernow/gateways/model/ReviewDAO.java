@@ -18,7 +18,14 @@ public class ReviewDAO {
     private String review;
     private Double rating;
     
-    public ReviewDAO() {
+    public ReviewDAO(Long id, String name, String review, Double rating) {
+		this.id = id;
+		this.name = name;
+		this.review = review;
+		this.rating = rating;
+	}
+
+	public ReviewDAO() {
     	this.name = "";
     	this.review = "";
     	this.rating = 1.0;

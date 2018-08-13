@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import com.ricardobevi.delivernow.dto.LatLongLocationDto;
 import com.ricardobevi.delivernow.dto.OrderDto;
-import com.ricardobevi.delivernow.mocks.MockedETAGateway;
+import com.ricardobevi.delivernow.gateways.MockedETAGateway;
 import com.ricardobevi.delivernow.mocks.MockedRestaurantGateway;
 import com.ricardobevi.delivernow.usecase.placeorder.PlaceOrderUseCase;
 import com.ricardobevi.delivernow.usecase.placeorder.PlaceOrderUseCaseInput;

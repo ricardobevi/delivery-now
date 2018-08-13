@@ -10,9 +10,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -23,6 +21,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.mock.http.MockHttpOutputMessage;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -30,12 +29,11 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.ricardobevi.delivernow.MainApplication;
 import com.ricardobevi.delivernow.controllers.requests.ReviewRequest;
-import com.ricardobevi.delivernow.gateways.model.RestaurantDAO;
-import com.ricardobevi.delivernow.gateways.model.RestaurantRepository;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = MainApplication.class)
 @WebAppConfiguration
+@ActiveProfiles("test")
 public class ReviewControllerTest {
 		
 	private MediaType contentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
@@ -43,8 +41,6 @@ public class ReviewControllerTest {
 	        Charset.forName("utf8"));
 	
 	private MockMvc mockMvc;
-	
-	private List<RestaurantDAO> restaurantDAOList = new ArrayList<RestaurantDAO>();
 	
     @SuppressWarnings("rawtypes")
 	private HttpMessageConverter mappingJackson2HttpMessageConverter;
@@ -61,21 +57,14 @@ public class ReviewControllerTest {
                 this.mappingJackson2HttpMessageConverter);
     }
 	
+    private static final Long restaurantId = 1L;
 	
     @Autowired
     private WebApplicationContext webApplicationContext;
     
-    @Autowired
-    private RestaurantRepository restaurantRepository;
-	
 	@Before
 	public void setup() throws Exception {
 	    this.mockMvc = webAppContextSetup(webApplicationContext).build();
-	    
-	    restaurantRepository.deleteAllInBatch();
-	    
-	    this.restaurantDAOList.add(restaurantRepository.save(new RestaurantDAO()));
-	    
 	}
 	
     @Test
@@ -85,16 +74,16 @@ public class ReviewControllerTest {
     	
         String reviewJson = json(reviewRequest);
 
-        this.mockMvc.perform(post("/review/" + this.restaurantDAOList.get(0).getId().longValue())
+        this.mockMvc.perform(post("/review/" + restaurantId)
                 .contentType(contentType)
                 .content(reviewJson))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(contentType))
-                .andExpect(jsonPath("$.id", is(this.restaurantDAOList.get(0).getId().intValue())))
-                .andExpect(jsonPath("$.rating", is(1.0)))
-                .andExpect(jsonPath("$.reviews[0].name", is("Ricky")))
-                .andExpect(jsonPath("$.reviews[0].review", is("Another Review")))
-                .andExpect(jsonPath("$.reviews[0].rating", is(1.0)))
+                .andExpect(jsonPath("$.id", is(restaurantId.intValue())))
+                .andExpect(jsonPath("$.rating", is(2.5)))
+                .andExpect(jsonPath("$.reviews[1].name", is("Ricky")))
+                .andExpect(jsonPath("$.reviews[1].review", is("Another Review")))
+                .andExpect(jsonPath("$.reviews[1].rating", is(1.0)))
                 ;
     }
     
@@ -105,7 +94,7 @@ public class ReviewControllerTest {
     	
         String reviewJson = json(reviewRequest);
 
-        this.mockMvc.perform(post("/review/" + this.restaurantDAOList.get(0).getId().longValue())
+        this.mockMvc.perform(post("/review/" + restaurantId)
                 .contentType(contentType)
                 .content(reviewJson))
                 .andExpect(status().isBadRequest())
@@ -121,7 +110,7 @@ public class ReviewControllerTest {
     	
         String reviewJson = json(reviewRequest);
 
-        this.mockMvc.perform(post("/review/" + this.restaurantDAOList.get(0).getId().longValue())
+        this.mockMvc.perform(post("/review/" + restaurantId)
                 .contentType(contentType)
                 .content(reviewJson))
                 .andExpect(status().isBadRequest())
@@ -137,7 +126,7 @@ public class ReviewControllerTest {
     	
         String reviewJson = json(reviewRequest);
 
-        this.mockMvc.perform(post("/review/" + this.restaurantDAOList.get(0).getId().longValue())
+        this.mockMvc.perform(post("/review/" + restaurantId)
                 .contentType(contentType)
                 .content(reviewJson))
                 .andExpect(status().isBadRequest())
@@ -152,7 +141,7 @@ public class ReviewControllerTest {
     	
         String reviewJson = "{\"hello\": \"im a malformed entry\"}";
 
-        this.mockMvc.perform(post("/review/" + this.restaurantDAOList.get(0).getId().longValue())
+        this.mockMvc.perform(post("/review/" + restaurantId)
                 .contentType(contentType)
                 .content(reviewJson))
                 .andExpect(status().isBadRequest())

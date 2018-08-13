@@ -10,9 +10,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -23,6 +21,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.mock.http.MockHttpOutputMessage;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -31,15 +30,13 @@ import org.springframework.web.context.WebApplicationContext;
 import com.ricardobevi.delivernow.MainApplication;
 import com.ricardobevi.delivernow.controllers.requests.MealRequest;
 import com.ricardobevi.delivernow.controllers.requests.OrderRequest;
-import com.ricardobevi.delivernow.gateways.model.MealDAO;
-import com.ricardobevi.delivernow.gateways.model.OrderDAO;
-import com.ricardobevi.delivernow.gateways.model.RestaurantDAO;
-import com.ricardobevi.delivernow.gateways.model.RestaurantRepository;
-import com.ricardobevi.delivernow.gateways.model.ReviewDAO;
+import com.ricardobevi.delivernow.gateways.MockedETAGateway;
+import com.ricardobevi.delivernow.mocks.MockedRestaurantGateway;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = MainApplication.class)
 @WebAppConfiguration
+@ActiveProfiles("test")
 public class OrderControllerTest {
 
 	private MediaType contentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
@@ -47,8 +44,6 @@ public class OrderControllerTest {
 	        Charset.forName("utf8"));
 	
 	private MockMvc mockMvc;
-	
-	private List<RestaurantDAO> restaurantDAOList = new ArrayList<RestaurantDAO>();
 	
     @SuppressWarnings("rawtypes")
 	private HttpMessageConverter mappingJackson2HttpMessageConverter;
@@ -65,40 +60,28 @@ public class OrderControllerTest {
                 this.mappingJackson2HttpMessageConverter);
     }
 	
+    
+    private static final Long restaurantId = 1L;
 	
     @Autowired
     private WebApplicationContext webApplicationContext;
-    
-    @Autowired
-    private RestaurantRepository restaurantRepository;
 	
 	@Before
 	public void setup() throws Exception {
 	    this.mockMvc = webAppContextSetup(webApplicationContext).build();
-	    
-	    restaurantRepository.deleteAll();
-	    
-	    this.restaurantDAOList.add(restaurantRepository.save(
-	    		new RestaurantDAO(
-	    				1L,
-	    				Arrays.asList(new ReviewDAO()),
-	    				Arrays.asList(new MealDAO("Potatoes", "Potatoes", 2.0)),
-	    				Arrays.asList(new OrderDAO())
-	    		)
-	    ));
-	    
 	}
 	
     @Test
     public void placeOrder() throws Exception {
-    	
-    	Long restaurantId = this.restaurantDAOList.get(0).getId().longValue();
-    	
+    
     	OrderRequest orderRequest = new OrderRequest(
-    			Arrays.asList(new MealRequest("Potatoes", "Potatoes", 2.0)),
-    			2.0,
+    			Arrays.asList(new MealRequest(
+    					MockedRestaurantGateway.bakedPotatoes.getName(), 
+    					MockedRestaurantGateway.bakedPotatoes.getDescription(), 
+    					MockedRestaurantGateway.bakedPotatoes.getPrice())),
+    			3.5,
     			"221b Baker Street",
-    			"51.523767,-0.1607498"
+    			MockedETAGateway.haedoCity
     	);
     	
         String orderJson = json(orderRequest);
@@ -108,6 +91,7 @@ public class OrderControllerTest {
                 .content(orderJson))
         		.andExpect(status().isOk())
         		.andExpect(jsonPath("$.status", is("Order placed successfully")))
+        		.andExpect(jsonPath("$.eta", is("Your order will arrive in 50 minutes")))
                 ;
         
         
@@ -116,13 +100,11 @@ public class OrderControllerTest {
     @Test
     public void placeOrderRestaurantCantFullfill() throws Exception {
     	
-    	Long restaurantId = this.restaurantDAOList.get(0).getId().longValue();
-    	
     	OrderRequest orderRequest = new OrderRequest(
     			Arrays.asList(new MealRequest("Magic Potatoes", "Potatoes", 2.0)),
     			2.0,
     			"221b Baker Street",
-    			"51.523767,-0.1607498"
+    			MockedETAGateway.haedoCity
     	);
     	
         String orderJson = json(orderRequest);
@@ -141,13 +123,11 @@ public class OrderControllerTest {
     @Test
     public void placeOrderWithFieldMissing() throws Exception {
     	
-    	Long restaurantId = this.restaurantDAOList.get(0).getId().longValue();
-    	
     	OrderRequest orderRequest = new OrderRequest(
     			Arrays.asList(new MealRequest("Potatoes", "Potatoes", 2.0)),
     			null,
     			"221b Baker Street",
-    			"51.523767,-0.1607498"
+    			MockedETAGateway.haedoCity
     	);
     	
         String orderJson = json(orderRequest);
@@ -166,9 +146,7 @@ public class OrderControllerTest {
     
     @Test
     public void placeOrderWithWrongLatLongParam() throws Exception {
-    	
-    	Long restaurantId = this.restaurantDAOList.get(0).getId().longValue();
-    	
+
     	OrderRequest orderRequest = new OrderRequest(
     			Arrays.asList(new MealRequest("Potatoes", "Potatoes", 2.0)),
     			2.0,
@@ -197,7 +175,7 @@ public class OrderControllerTest {
     			Arrays.asList(new MealRequest("Potatoes", "Potatoes", 2.0)),
     			2.0,
     			"221b Baker Street",
-    			"51.523767,-0.1607498"
+    			MockedETAGateway.haedoCity
     	);
     	
         String orderJson = json(orderRequest);
