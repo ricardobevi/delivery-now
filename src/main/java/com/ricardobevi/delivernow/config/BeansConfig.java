@@ -10,6 +10,8 @@ import com.ricardobevi.delivernow.dto.MealDto;
 import com.ricardobevi.delivernow.gateways.DatabaseRestaurantGateway;
 import com.ricardobevi.delivernow.gateways.ETAGateway;
 import com.ricardobevi.delivernow.gateways.GoogleMapsETAGateway;
+import com.ricardobevi.delivernow.gateways.MailGateway;
+import com.ricardobevi.delivernow.gateways.GmailMailGateway;
 import com.ricardobevi.delivernow.gateways.RestaurantGateway;
 import com.ricardobevi.delivernow.gateways.model.MealDAO;
 import com.ricardobevi.delivernow.gateways.model.RestaurantDAO;
@@ -34,6 +36,11 @@ public class BeansConfig {
 	public ETAGateway GoogleMapsETAGateway() {
 		return new GoogleMapsETAGateway();
 	}
+	
+	@Bean
+	public MailGateway GmailMailGateway() {
+		return new GmailMailGateway();
+	}
 
 	@Bean
 	CommandLineRunner init(RestaurantRepository restaurantRepository) {
@@ -42,12 +49,16 @@ public class BeansConfig {
 			restaurantRepository.save(
 					new RestaurantDAO(
 							1L,
-							Arrays.asList(new ReviewDAO(1L, "Richard", "Nice place!", 4.0)),
+							Arrays.asList(
+									new ReviewDAO(1L, "Richard", "Nice place!", 4.0),
+									new ReviewDAO(1L, "Anne", "I LOVE POTATOES!", 5.0)
+							),
 							Arrays.asList(
 									new MealDAO(friedPotatoes), 
 									new MealDAO(bakedPotatoes)
 							),
-							ciudadelaHood
+							ciudadelaHood,
+							"commercial.email@mail.com"
 					)
 			);
 		};

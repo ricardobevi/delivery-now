@@ -40,6 +40,7 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-jersey')
 	compile('org.springframework.boot:spring-boot-starter-actuator')
 	compile('com.google.maps:google-maps-services:0.2.9')
+	compile('javax.mail:mail:1.4.1')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 	runtime('org.postgresql:postgresql')
 	runtime('com.h2database:h2')

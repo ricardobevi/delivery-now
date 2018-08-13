@@ -8,6 +8,7 @@ import org.junit.Test;
 import com.ricardobevi.delivernow.dto.LatLongLocationDto;
 import com.ricardobevi.delivernow.dto.OrderDto;
 import com.ricardobevi.delivernow.gateways.MockedETAGateway;
+import com.ricardobevi.delivernow.gateways.MockedMailGateway;
 import com.ricardobevi.delivernow.mocks.MockedRestaurantGateway;
 import com.ricardobevi.delivernow.usecase.placeorder.PlaceOrderUseCase;
 import com.ricardobevi.delivernow.usecase.placeorder.PlaceOrderUseCaseInput;
@@ -47,7 +48,8 @@ public class PlaceOrderUseCaseSpec {
 				restaurantId, 
 				createOrderDto(), 
 				new MockedRestaurantGateway(),
-				new MockedETAGateway()
+				new MockedETAGateway(),
+				new MockedMailGateway()
 		);
 		
 		PlaceOrderUseCaseOutput placeOrderUseCaseOutput = new PlaceOrderUseCase(placeOrderUseCaseinput).execute();
@@ -65,7 +67,8 @@ public class PlaceOrderUseCaseSpec {
 				restaurantId, 
 				createImpossibleToFullfillOrderDto(), 
 				new MockedRestaurantGateway(),
-				new MockedETAGateway()
+				new MockedETAGateway(),
+				new MockedMailGateway()
 		);
 		
 		PlaceOrderUseCaseOutput placeOrderUseCaseOutput = new PlaceOrderUseCase(placeOrderUseCaseinput).execute();
@@ -84,13 +87,35 @@ public class PlaceOrderUseCaseSpec {
 				restaurantId, 
 				createOrderDto(), 
 				new MockedRestaurantGateway(),
-				new MockedETAGateway()
+				new MockedETAGateway(),
+				new MockedMailGateway()
 		);
 		
 		PlaceOrderUseCaseOutput placeOrderUseCaseOutput = new PlaceOrderUseCase(placeOrderUseCaseinput).execute();
 		
 		Assert.assertTrue(placeOrderUseCaseOutput.getOrderStatusDto().getStatus().equals("Order placed successfully"));
 		Assert.assertTrue(placeOrderUseCaseOutput.getOrderStatusDto().getEta().equals("Your order will arrive in 50 minutes"));
+		
+	}
+	
+	@Test
+	public void given_an_order_should_place_it_and_send_an_email() {
+		
+		Long restaurantId = 123456L;
+		
+		MockedMailGateway mockedMailGateway = new MockedMailGateway();
+		
+		PlaceOrderUseCaseInput placeOrderUseCaseinput = new PlaceOrderUseCaseInput(
+				restaurantId, 
+				createOrderDto(), 
+				new MockedRestaurantGateway(),
+				new MockedETAGateway(),
+				mockedMailGateway
+		);
+		
+		PlaceOrderUseCaseOutput placeOrderUseCaseOutput = new PlaceOrderUseCase(placeOrderUseCaseinput).execute();
+		
+		Assert.assertEquals("You have a new order! Address: 221b Baker Street", mockedMailGateway.getBody());
 		
 	}
 	

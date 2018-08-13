@@ -6,7 +6,9 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
 
 import com.ricardobevi.delivernow.gateways.ETAGateway;
+import com.ricardobevi.delivernow.gateways.MailGateway;
 import com.ricardobevi.delivernow.gateways.MockedETAGateway;
+import com.ricardobevi.delivernow.gateways.MockedMailGateway;
 
 
 @Profile("test")
@@ -17,6 +19,13 @@ public class MocksConfig {
 	@Primary
 	public ETAGateway GoogleMapsETAGateway() {
 		return new MockedETAGateway();
+	}
+	
+	
+	@Bean
+	@Primary
+	public MailGateway MockedMailGateway() {
+		return new MockedMailGateway();
 	}
 
 }
