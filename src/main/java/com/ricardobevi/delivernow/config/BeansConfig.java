@@ -49,7 +49,10 @@ public class BeansConfig {
 			restaurantRepository.save(
 					new RestaurantDAO(
 							1L,
-							Arrays.asList(new ReviewDAO(1L, "Richard", "Nice place!", 4.0)),
+							Arrays.asList(
+									new ReviewDAO(1L, "Richard", "Nice place!", 4.0),
+									new ReviewDAO(1L, "Anne", "I LOVE POTATOES!", 5.0)
+							),
 							Arrays.asList(
 									new MealDAO(friedPotatoes), 
 									new MealDAO(bakedPotatoes)

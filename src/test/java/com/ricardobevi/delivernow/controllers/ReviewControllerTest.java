@@ -80,10 +80,11 @@ public class ReviewControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(contentType))
                 .andExpect(jsonPath("$.id", is(restaurantId.intValue())))
-                .andExpect(jsonPath("$.rating", is(2.5)))
-                .andExpect(jsonPath("$.reviews[1].name", is("Ricky")))
-                .andExpect(jsonPath("$.reviews[1].review", is("Another Review")))
-                .andExpect(jsonPath("$.reviews[1].rating", is(1.0)))
+                .andExpect(jsonPath("$.rating", is(3.3333333333333335)))
+                .andExpect(jsonPath("$.reviews[2].name", is("Ricky")))
+                .andExpect(jsonPath("$.reviews[2].review", is("Another Review")))
+                .andExpect(jsonPath("$.reviews[2].rating", is(1.0)))
+                .andExpect(jsonPath("$.commercialEmail", is("commercial.email@mail.com")))
                 ;
     }
     

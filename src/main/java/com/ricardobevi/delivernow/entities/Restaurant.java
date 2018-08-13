@@ -29,6 +29,7 @@ public class Restaurant {
 		this.meals = restaurantDto.getMeals().stream().map(mealDto -> new Meal(mealDto)).collect(Collectors.toList());
 		this.orders = new ArrayList<Order>();
 		this.location = new LatLongLocation(restaurantDto.getLocation());
+		this.commercialEmail = restaurantDto.getCommercialEmail();
 	}
 
 	public void addReview(Review review) {

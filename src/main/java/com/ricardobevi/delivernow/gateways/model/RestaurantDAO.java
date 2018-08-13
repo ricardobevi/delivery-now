@@ -31,7 +31,7 @@ public class RestaurantDAO {
 	
 	private String latLong;
 	
-	private String comercialEmail;
+	private String commercialEmail;
 	
 	public RestaurantDAO() {}
 	
@@ -40,12 +40,12 @@ public class RestaurantDAO {
 			List<ReviewDAO> reviews, 
 			List<MealDAO> meals, 
 			String latLong,
-			String comercialEmail) {
+			String commercialEmail) {
 		this.id = id;
 		this.reviews = reviews;
 		this.meals = meals;
 		this.latLong = latLong;
-		this.comercialEmail = comercialEmail;
+		this.commercialEmail = commercialEmail;
 	}
 
 	public Long getId() {
@@ -61,7 +61,7 @@ public class RestaurantDAO {
 				meals.stream().map(MealDAO::asDto).collect(Collectors.toList()),
 				orders.stream().map(OrderDAO::asDto).collect(Collectors.toList()),
 				LatLongLocationDto.parseString(latLong),
-				this.comercialEmail
+				this.commercialEmail
 		);
 		
 		return restaurantDto;
