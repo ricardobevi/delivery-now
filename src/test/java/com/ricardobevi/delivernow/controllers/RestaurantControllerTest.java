@@ -9,9 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 import java.nio.charset.Charset;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -21,18 +19,24 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.ricardobevi.delivernow.MainApplication;
+import com.ricardobevi.delivernow.gateways.MockedETAGateway;
+import com.ricardobevi.delivernow.gateways.model.MealDAO;
 import com.ricardobevi.delivernow.gateways.model.RestaurantDAO;
 import com.ricardobevi.delivernow.gateways.model.RestaurantRepository;
+import com.ricardobevi.delivernow.gateways.model.ReviewDAO;
+import com.ricardobevi.delivernow.mocks.MockedRestaurantGateway;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = MainApplication.class)
 @WebAppConfiguration
+@ActiveProfiles("test")
 public class RestaurantControllerTest {
 		
 	private MediaType contentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
@@ -40,8 +44,6 @@ public class RestaurantControllerTest {
 	        Charset.forName("utf8"));
 	
 	private MockMvc mockMvc;
-	
-	private List<RestaurantDAO> restaurantDAOList = new ArrayList<RestaurantDAO>();
 	
     @SuppressWarnings("rawtypes")
 	private HttpMessageConverter mappingJackson2HttpMessageConverter;
@@ -69,16 +71,22 @@ public class RestaurantControllerTest {
 	public void setup() throws Exception {
 	    this.mockMvc = webAppContextSetup(webApplicationContext).build();
 	    
-	    restaurantRepository.deleteAllInBatch();
-	    
-	    this.restaurantDAOList.add(restaurantRepository.save(new RestaurantDAO()));
-	    
 	}
 	
     @Test
     public void deleteRestaurant() throws Exception {
     	
-    	Long restaurantId = this.restaurantDAOList.get(0).getId().longValue();
+    	Long restaurantId = restaurantRepository.save(
+				new RestaurantDAO(
+						2L,
+						Arrays.asList(new ReviewDAO(1L, "Richard", "Nice place!", 4.0)),
+						Arrays.asList(
+								new MealDAO(MockedRestaurantGateway.friedPotatoes), 
+								new MealDAO(MockedRestaurantGateway.bakedPotatoes)
+						),
+						MockedETAGateway.ciudadelaHood
+				)
+		).getId();
     	
         this.mockMvc.perform(delete("/restaurant/" + restaurantId)
                 .contentType(contentType))

@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import com.ricardobevi.delivernow.dto.LatLongLocationDto;
 import com.ricardobevi.delivernow.dto.OrderDto;
+import com.ricardobevi.delivernow.gateways.MockedETAGateway;
 import com.ricardobevi.delivernow.mocks.MockedRestaurantGateway;
 import com.ricardobevi.delivernow.usecase.placeorder.PlaceOrderUseCase;
 import com.ricardobevi.delivernow.usecase.placeorder.PlaceOrderUseCaseInput;
@@ -45,7 +46,8 @@ public class PlaceOrderUseCaseSpec {
 		PlaceOrderUseCaseInput placeOrderUseCaseinput = new PlaceOrderUseCaseInput(
 				restaurantId, 
 				createOrderDto(), 
-				new MockedRestaurantGateway()
+				new MockedRestaurantGateway(),
+				new MockedETAGateway()
 		);
 		
 		PlaceOrderUseCaseOutput placeOrderUseCaseOutput = new PlaceOrderUseCase(placeOrderUseCaseinput).execute();
@@ -62,12 +64,33 @@ public class PlaceOrderUseCaseSpec {
 		PlaceOrderUseCaseInput placeOrderUseCaseinput = new PlaceOrderUseCaseInput(
 				restaurantId, 
 				createImpossibleToFullfillOrderDto(), 
-				new MockedRestaurantGateway()
+				new MockedRestaurantGateway(),
+				new MockedETAGateway()
 		);
 		
 		PlaceOrderUseCaseOutput placeOrderUseCaseOutput = new PlaceOrderUseCase(placeOrderUseCaseinput).execute();
 		
 		Assert.assertTrue(placeOrderUseCaseOutput.getOrderStatusDto().getStatus().equals("The restaurant can't fullfill the order"));
+		
+	}
+
+	
+	@Test
+	public void given_an_order_should_place_it_and_return_the_ETA() {
+		
+		Long restaurantId = 123456L;
+		
+		PlaceOrderUseCaseInput placeOrderUseCaseinput = new PlaceOrderUseCaseInput(
+				restaurantId, 
+				createOrderDto(), 
+				new MockedRestaurantGateway(),
+				new MockedETAGateway()
+		);
+		
+		PlaceOrderUseCaseOutput placeOrderUseCaseOutput = new PlaceOrderUseCase(placeOrderUseCaseinput).execute();
+		
+		Assert.assertTrue(placeOrderUseCaseOutput.getOrderStatusDto().getStatus().equals("Order placed successfully"));
+		Assert.assertTrue(placeOrderUseCaseOutput.getOrderStatusDto().getEta().equals("Your order will arrive in 50 minutes"));
 		
 	}
 	

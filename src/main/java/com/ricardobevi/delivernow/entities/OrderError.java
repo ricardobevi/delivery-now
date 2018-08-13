@@ -9,5 +9,10 @@ public class OrderError implements OrderStatus {
 	public OrderStatusDto asDto() {
 		return new OrderStatusDto("The restaurant can't fullfill the order", true);
 	}
+
+	@Override
+	public OrderStatusDto asDto(String eta) {
+		return this.asDto();
+	}
 	
 }

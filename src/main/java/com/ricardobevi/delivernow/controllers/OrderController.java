@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ricardobevi.delivernow.controllers.requests.ErrorResponse;
 import com.ricardobevi.delivernow.controllers.requests.OrderRequest;
 import com.ricardobevi.delivernow.controllers.requests.validations.RequestValidation;
+import com.ricardobevi.delivernow.gateways.ETAGateway;
 import com.ricardobevi.delivernow.gateways.RestaurantGateway;
 import com.ricardobevi.delivernow.gateways.exceptions.RestaurantNotFoundException;
 import com.ricardobevi.delivernow.usecase.placeorder.PlaceOrderUseCase;
@@ -23,6 +24,9 @@ public class OrderController {
 
 	@Autowired
 	RestaurantGateway restaurantGateway;
+	
+	@Autowired
+	ETAGateway etaGateway;
 
 	@PostMapping
 	public ResponseEntity<Object> placeOrder(@PathVariable Long restaurantId, @RequestBody OrderRequest orderRequest) {
@@ -34,7 +38,8 @@ public class OrderController {
 			PlaceOrderUseCaseInput placeOrderUseCaseinput = new PlaceOrderUseCaseInput(
 					restaurantId, 
 					orderRequest.asDto(), 
-					restaurantGateway
+					restaurantGateway,
+					etaGateway
 			);
 
 			try {

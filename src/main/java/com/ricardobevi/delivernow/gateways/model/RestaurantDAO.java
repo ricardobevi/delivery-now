@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.ricardobevi.delivernow.dto.LatLongLocationDto;
 import com.ricardobevi.delivernow.dto.RestaurantDto;
 
 @Entity(name = "restaurant")
@@ -28,16 +29,16 @@ public class RestaurantDAO {
 	@OneToMany(cascade=CascadeType.ALL)
 	private List<OrderDAO> orders = new ArrayList<OrderDAO>();
 	
+	private String latLong;
+	
 	public RestaurantDAO() {}
 	
-	public RestaurantDAO(Long id, List<ReviewDAO> reviews, List<MealDAO> meals, List<OrderDAO> orders) {
+	public RestaurantDAO(Long id, List<ReviewDAO> reviews, List<MealDAO> meals, String latLong) {
 		this.id = id;
 		this.reviews = reviews;
 		this.meals = meals;
-		this.orders = orders;
+		this.latLong = latLong;
 	}
-
-
 
 	public Long getId() {
 		return id;
@@ -50,7 +51,8 @@ public class RestaurantDAO {
 				1.0,
 				reviews.stream().map(ReviewDAO::asDto).collect(Collectors.toList()),
 				meals.stream().map(MealDAO::asDto).collect(Collectors.toList()),
-				orders.stream().map(OrderDAO::asDto).collect(Collectors.toList())
+				orders.stream().map(OrderDAO::asDto).collect(Collectors.toList()),
+				LatLongLocationDto.parseString(latLong)
 		);
 		
 		return restaurantDto;
