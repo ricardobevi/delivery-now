@@ -1,9 +1,10 @@
-package com.ricardobevi.delivernow.gateways;
+package com.ricardobevi.delivernow.gateways.mocks;
 
 import com.ricardobevi.delivernow.dto.OrderDto;
 import com.ricardobevi.delivernow.dto.RestaurantDto;
+import com.ricardobevi.delivernow.gateways.ETAGateway;
 
-public class MockedETAGateway implements ETAGateway{
+public class MockedETAGateway implements ETAGateway {
 
 	public static final String haedoCity = "-34.645914,-58.592202";
 	public static final String ciudadelaHood = "-34.629359,-58.537554";

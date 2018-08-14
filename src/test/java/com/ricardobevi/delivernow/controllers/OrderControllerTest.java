@@ -30,7 +30,7 @@ import org.springframework.web.context.WebApplicationContext;
 import com.ricardobevi.delivernow.MainApplication;
 import com.ricardobevi.delivernow.controllers.requests.MealRequest;
 import com.ricardobevi.delivernow.controllers.requests.OrderRequest;
-import com.ricardobevi.delivernow.gateways.MockedETAGateway;
+import com.ricardobevi.delivernow.gateways.mocks.MockedETAGateway;
 import com.ricardobevi.delivernow.mocks.MockedRestaurantGateway;
 
 @RunWith(SpringRunner.class)

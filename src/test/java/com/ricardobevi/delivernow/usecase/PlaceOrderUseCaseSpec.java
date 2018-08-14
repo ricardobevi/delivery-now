@@ -2,13 +2,14 @@ package com.ricardobevi.delivernow.usecase;
 
 import java.util.Arrays;
 
+import com.ricardobevi.delivernow.gateways.mocks.MockedSMSGateway;
 import org.junit.Assert;
 import org.junit.Test;
 
 import com.ricardobevi.delivernow.dto.LatLongLocationDto;
 import com.ricardobevi.delivernow.dto.OrderDto;
-import com.ricardobevi.delivernow.gateways.MockedETAGateway;
-import com.ricardobevi.delivernow.gateways.MockedMailGateway;
+import com.ricardobevi.delivernow.gateways.mocks.MockedETAGateway;
+import com.ricardobevi.delivernow.gateways.mocks.MockedMailGateway;
 import com.ricardobevi.delivernow.mocks.MockedRestaurantGateway;
 import com.ricardobevi.delivernow.usecase.placeorder.PlaceOrderUseCase;
 import com.ricardobevi.delivernow.usecase.placeorder.PlaceOrderUseCaseInput;
@@ -49,7 +50,8 @@ public class PlaceOrderUseCaseSpec {
 				createOrderDto(), 
 				new MockedRestaurantGateway(),
 				new MockedETAGateway(),
-				new MockedMailGateway()
+				new MockedMailGateway(),
+				new MockedSMSGateway()
 		);
 		
 		PlaceOrderUseCaseOutput placeOrderUseCaseOutput = new PlaceOrderUseCase(placeOrderUseCaseinput).execute();
@@ -68,7 +70,8 @@ public class PlaceOrderUseCaseSpec {
 				createImpossibleToFullfillOrderDto(), 
 				new MockedRestaurantGateway(),
 				new MockedETAGateway(),
-				new MockedMailGateway()
+				new MockedMailGateway(),
+				new MockedSMSGateway()
 		);
 		
 		PlaceOrderUseCaseOutput placeOrderUseCaseOutput = new PlaceOrderUseCase(placeOrderUseCaseinput).execute();
@@ -88,7 +91,8 @@ public class PlaceOrderUseCaseSpec {
 				createOrderDto(), 
 				new MockedRestaurantGateway(),
 				new MockedETAGateway(),
-				new MockedMailGateway()
+				new MockedMailGateway(),
+				new MockedSMSGateway()
 		);
 		
 		PlaceOrderUseCaseOutput placeOrderUseCaseOutput = new PlaceOrderUseCase(placeOrderUseCaseinput).execute();
@@ -110,13 +114,36 @@ public class PlaceOrderUseCaseSpec {
 				createOrderDto(), 
 				new MockedRestaurantGateway(),
 				new MockedETAGateway(),
-				mockedMailGateway
+				mockedMailGateway,
+				new MockedSMSGateway()
 		);
 		
-		PlaceOrderUseCaseOutput placeOrderUseCaseOutput = new PlaceOrderUseCase(placeOrderUseCaseinput).execute();
+		new PlaceOrderUseCase(placeOrderUseCaseinput).execute();
 		
 		Assert.assertEquals("You have a new order! Address: 221b Baker Street", mockedMailGateway.getBody());
 		
+	}
+
+	@Test
+	public void given_an_order_should_place_it_and_send_an_sms() {
+
+		Long restaurantId = 123456L;
+
+		MockedSMSGateway mockedSmsGateway = new MockedSMSGateway();
+
+		PlaceOrderUseCaseInput placeOrderUseCaseinput = new PlaceOrderUseCaseInput(
+				restaurantId,
+				createOrderDto(),
+				new MockedRestaurantGateway(),
+				new MockedETAGateway(),
+				new MockedMailGateway(),
+				mockedSmsGateway
+		);
+
+		new PlaceOrderUseCase(placeOrderUseCaseinput).execute();
+
+		Assert.assertEquals("Your order has been placed!", mockedSmsGateway.getSms());
+
 	}
 	
 }

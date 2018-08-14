@@ -1,4 +1,4 @@
-package com.ricardobevi.delivernow.gateways;
+package com.ricardobevi.delivernow.gateways.impl;
 
 import java.io.IOException;
 
@@ -9,6 +9,7 @@ import com.google.maps.model.DistanceMatrix;
 import com.google.maps.model.Unit;
 import com.ricardobevi.delivernow.dto.OrderDto;
 import com.ricardobevi.delivernow.dto.RestaurantDto;
+import com.ricardobevi.delivernow.gateways.ETAGateway;
 
 public class GoogleMapsETAGateway implements ETAGateway {
 

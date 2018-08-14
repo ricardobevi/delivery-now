@@ -1,8 +1,9 @@
-package com.ricardobevi.delivernow.gateways;
+package com.ricardobevi.delivernow.gateways.impl;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.ricardobevi.delivernow.gateways.RestaurantGateway;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 

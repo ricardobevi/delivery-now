@@ -1,4 +1,4 @@
-package com.ricardobevi.delivernow.gateways;
+package com.ricardobevi.delivernow.gateways.impl;
 
 import java.util.Properties;
 
@@ -12,6 +12,7 @@ import javax.mail.internet.MimeMessage;
 
 import com.ricardobevi.delivernow.dto.OrderDto;
 import com.ricardobevi.delivernow.dto.RestaurantDto;
+import com.ricardobevi.delivernow.gateways.MailGateway;
 
 public class GmailMailGateway implements MailGateway {
 	

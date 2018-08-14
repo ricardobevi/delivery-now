@@ -1,5 +1,6 @@
 package com.ricardobevi.delivernow.controllers;
 
+import com.ricardobevi.delivernow.gateways.SMSGateway;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +33,10 @@ public class OrderController {
 	@Autowired
 	MailGateway mailGateway;
 
+	@Autowired
+	SMSGateway smsGateway;
+
+
 	@PostMapping
 	public ResponseEntity<Object> placeOrder(@PathVariable Long restaurantId, @RequestBody OrderRequest orderRequest) {
 
@@ -44,7 +49,8 @@ public class OrderController {
 					orderRequest.asDto(), 
 					restaurantGateway,
 					etaGateway,
-					mailGateway
+					mailGateway,
+					smsGateway
 			);
 
 			try {
