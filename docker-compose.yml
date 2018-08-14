@@ -9,6 +9,10 @@ services:
       POSTGRES_USER: delivernow
       POSTGRES_PASSWORD: 123456
 
+  notifications-api:
+    image: notifications-api
+    restart: always
+
   delivernow:
     image: deliver-now
     restart: always
