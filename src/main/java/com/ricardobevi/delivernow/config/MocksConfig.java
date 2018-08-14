@@ -1,14 +1,13 @@
 package com.ricardobevi.delivernow.config;
 
+import com.ricardobevi.delivernow.gateways.*;
+import com.ricardobevi.delivernow.gateways.mocks.MockedETAGateway;
+import com.ricardobevi.delivernow.gateways.mocks.MockedMailGateway;
+import com.ricardobevi.delivernow.gateways.mocks.MockedSMSGateway;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
-
-import com.ricardobevi.delivernow.gateways.ETAGateway;
-import com.ricardobevi.delivernow.gateways.MailGateway;
-import com.ricardobevi.delivernow.gateways.MockedETAGateway;
-import com.ricardobevi.delivernow.gateways.MockedMailGateway;
 
 
 @Profile("test")
@@ -28,4 +27,10 @@ public class MocksConfig {
 		return new MockedMailGateway();
 	}
 
+
+	@Bean
+	@Primary
+	public SMSGateway MockedSMSGateway() {
+		return new MockedSMSGateway();
+	}
 }

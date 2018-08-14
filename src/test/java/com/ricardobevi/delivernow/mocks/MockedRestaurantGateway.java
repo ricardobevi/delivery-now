@@ -3,7 +3,6 @@ package com.ricardobevi.delivernow.mocks;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import com.ricardobevi.delivernow.dto.LatLongLocationDto;
@@ -11,9 +10,8 @@ import com.ricardobevi.delivernow.dto.MealDto;
 import com.ricardobevi.delivernow.dto.OrderDto;
 import com.ricardobevi.delivernow.dto.RestaurantDto;
 import com.ricardobevi.delivernow.dto.ReviewDto;
-import com.ricardobevi.delivernow.gateways.MockedETAGateway;
+import com.ricardobevi.delivernow.gateways.mocks.MockedETAGateway;
 import com.ricardobevi.delivernow.gateways.RestaurantGateway;
-import com.ricardobevi.delivernow.gateways.model.RestaurantDAO;
 
 public class MockedRestaurantGateway implements RestaurantGateway {
 

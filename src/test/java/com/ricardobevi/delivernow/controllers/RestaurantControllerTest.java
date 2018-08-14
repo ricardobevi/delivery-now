@@ -27,7 +27,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.ricardobevi.delivernow.MainApplication;
-import com.ricardobevi.delivernow.gateways.MockedETAGateway;
+import com.ricardobevi.delivernow.gateways.mocks.MockedETAGateway;
 import com.ricardobevi.delivernow.gateways.model.MealDAO;
 import com.ricardobevi.delivernow.gateways.model.RestaurantDAO;
 import com.ricardobevi.delivernow.gateways.model.RestaurantRepository;

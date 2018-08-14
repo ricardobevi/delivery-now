@@ -6,6 +6,7 @@ import com.ricardobevi.delivernow.entities.Restaurant;
 import com.ricardobevi.delivernow.gateways.ETAGateway;
 import com.ricardobevi.delivernow.gateways.MailGateway;
 import com.ricardobevi.delivernow.gateways.RestaurantGateway;
+import com.ricardobevi.delivernow.gateways.SMSGateway;
 
 public class PlaceOrderUseCase {
 	
@@ -13,12 +14,14 @@ public class PlaceOrderUseCase {
 	private final RestaurantGateway restaurantGateway;
 	private final ETAGateway etaGateway;
 	private final MailGateway mailGateway;
+	private final SMSGateway smsGateway;
 
 	public PlaceOrderUseCase(PlaceOrderUseCaseInput placeOrderUseCaseinput) {
 		this.placeOrderUseCaseinput = placeOrderUseCaseinput;
 		this.restaurantGateway = placeOrderUseCaseinput.getRestaurantGateway();
 		this.etaGateway = placeOrderUseCaseinput.getEtaGateway();
 		this.mailGateway = placeOrderUseCaseinput.getMailGateway();
+		this.smsGateway = placeOrderUseCaseinput.getSmsGateway();
 	}
 
 	public PlaceOrderUseCaseOutput execute() {
@@ -34,6 +37,8 @@ public class PlaceOrderUseCase {
 			this.restaurantGateway.save(restaurant.asDto());
 			
 			this.mailGateway.send(restaurant.asDto(), order.asDto());
+
+			this.smsGateway.sendSms(order.asDto(), restaurant.asDto());
 			
 			String eta = this.etaGateway.etaString(restaurant.asDto(), this.placeOrderUseCaseinput.getOrderDto());
 			

@@ -4,6 +4,7 @@ import com.ricardobevi.delivernow.dto.OrderDto;
 import com.ricardobevi.delivernow.gateways.ETAGateway;
 import com.ricardobevi.delivernow.gateways.MailGateway;
 import com.ricardobevi.delivernow.gateways.RestaurantGateway;
+import com.ricardobevi.delivernow.gateways.SMSGateway;
 
 public class PlaceOrderUseCaseInput {
 	
@@ -12,18 +13,21 @@ public class PlaceOrderUseCaseInput {
 	private final RestaurantGateway restaurantGateway;
 	private final ETAGateway etaGateway;
 	private final MailGateway mailGateway;
+	private final SMSGateway smsGateway;
 	
 	public PlaceOrderUseCaseInput(
-			Long restaurantId, 
-			OrderDto orderDto, 
-			RestaurantGateway restaurantGateway, 
-			ETAGateway etaGateway, 
-			MailGateway mailGateway) {
+			Long restaurantId,
+			OrderDto orderDto,
+			RestaurantGateway restaurantGateway,
+			ETAGateway etaGateway,
+			MailGateway mailGateway,
+			SMSGateway smsGateway) {
 		this.restaurantId = restaurantId;
 		this.orderDto = orderDto;
 		this.restaurantGateway = restaurantGateway;
 		this.etaGateway = etaGateway;
 		this.mailGateway = mailGateway;
+		this.smsGateway = smsGateway;
 	}
 
 	public Long getRestaurantId() {
@@ -46,6 +50,7 @@ public class PlaceOrderUseCaseInput {
 		return mailGateway;
 	}
 
-	
-
+	public SMSGateway getSmsGateway() {
+		return smsGateway;
+	}
 }

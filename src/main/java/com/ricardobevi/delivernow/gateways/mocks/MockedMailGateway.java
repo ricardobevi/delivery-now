@@ -1,7 +1,8 @@
-package com.ricardobevi.delivernow.gateways;
+package com.ricardobevi.delivernow.gateways.mocks;
 
 import com.ricardobevi.delivernow.dto.OrderDto;
 import com.ricardobevi.delivernow.dto.RestaurantDto;
+import com.ricardobevi.delivernow.gateways.MailGateway;
 
 public class MockedMailGateway implements MailGateway {
 
