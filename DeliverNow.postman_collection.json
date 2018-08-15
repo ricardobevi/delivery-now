@@ -1,0 +1,263 @@
+{
+	"info": {
+		"_postman_id": "75e5cb5d-947b-4c78-b437-706f2e26e431",
+		"name": "DeliverNow",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "local",
+			"item": [
+				{
+					"name": "Review Restaurant",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"Ricky\",\n\t\"review\": \"Nice review 23\",\n\t\"rating\": 1.5\n}"
+						},
+						"url": {
+							"raw": "localhost:8081/review/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"review",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Place an Order",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"meals\": [\n\t\t{\n            \"name\": \"Fried Potatoes\",\n            \"description\": \"Yummy potatoes\",\n            \"price\": 2.5\n        },\n    \t{\n            \"name\": \"Baked Potatoes\",\n            \"description\": \"Dummy potatoes\",\n            \"price\": 3.5\n        }\n\t],\n\t\"totalCost\": 6.0,\n\t\"address\": \"221b Baker Street\",\n\t\"latLong\": \"-34.598310,-58.417344\"\n}"
+						},
+						"url": {
+							"raw": "localhost:8081/order/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"order",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Filter Restaurants",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"meals\": [\n\t\t{\n            \"name\": \"Fried Potatoes\",\n            \"description\": \"Yummy potatoes\",\n            \"price\": 2.5\n        },\n    \t{\n            \"name\": \"Baked Potatoes\",\n            \"description\": \"Dummy potatoes\",\n            \"price\": 3.5\n        }\n\t],\n\t\"totalCost\": 6.0,\n\t\"address\": \"221b Baker Street\",\n\t\"latLong\": \"-34.598310,-58.417344\"\n}"
+						},
+						"url": {
+							"raw": "localhost:8081/restaurant?minRating=3",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"restaurant"
+							],
+							"query": [
+								{
+									"key": "minRating",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Restaurants",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 1,\n    \"rating\": 4.5,\n    \"reviews\": [\n        {\n            \"name\": \"Richard\",\n            \"review\": \"Nice place!\",\n            \"rating\": 4\n        },\n        {\n            \"name\": \"Anne\",\n            \"review\": \"I LOVE POTATOES!\",\n            \"rating\": 5\n        }\n    ],\n    \"meals\": [\n\t\t{\n            \"name\": \"Fried Potatoes\",\n            \"description\": \"Yummy potatoes\",\n            \"price\": 2.5\n        },\n    \t{\n            \"name\": \"Baked Potatoes\",\n            \"description\": \"Dummy potatoes\",\n            \"price\": 3.5\n        }\n    ],\n    \"location\": {\n        \"latitude\": -34.629359,\n        \"longitude\": -58.537554\n    },\n    \"commercialEmail\": \"commercial.email@mail.com\",\n    \"logo\" : \"http://restaurant.com/logo.png\",\n\t\"commercialName\" : \"Betty's\",\n\t\"legalName\" : \"BETT\",\n\t\"adminNumber\" : \"343444442233\",\n\t\"address\" : \"221b Baker Street\"\n}"
+						},
+						"url": {
+							"raw": "localhost:8081/restaurant",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"restaurant"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "remote",
+			"item": [
+				{
+					"name": "Review Restaurant Cloud",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"Ricky\",\n\t\"review\": \"Nice review\",\n\t\"rating\": 1.5\n}"
+						},
+						"url": {
+							"raw": "142.93.81.129:8081/review/1",
+							"host": [
+								"142",
+								"93",
+								"81",
+								"129"
+							],
+							"port": "8081",
+							"path": [
+								"review",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Place an Order Cloud",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"meals\": [\n\t\t{\n            \"name\": \"Fried Potatoes\",\n            \"description\": \"Yummy potatoes\",\n            \"price\": 2.5\n        },\n    \t{\n            \"name\": \"Baked Potatoes\",\n            \"description\": \"Dummy potatoes\",\n            \"price\": 3.5\n        }\n\t],\n\t\"totalCost\": 6.0,\n\t\"address\": \"221b Baker Street\",\n\t\"latLong\": \"-34.598310,-58.417344\"\n}"
+						},
+						"url": {
+							"raw": "142.93.81.129:8081/order/1",
+							"host": [
+								"142",
+								"93",
+								"81",
+								"129"
+							],
+							"port": "8081",
+							"path": [
+								"order",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Filter Restaurants Cloud",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"meals\": [\n\t\t{\n            \"name\": \"Fried Potatoes\",\n            \"description\": \"Yummy potatoes\",\n            \"price\": 2.5\n        },\n    \t{\n            \"name\": \"Baked Potatoes\",\n            \"description\": \"Dummy potatoes\",\n            \"price\": 3.5\n        }\n\t],\n\t\"totalCost\": 6.0,\n\t\"address\": \"221b Baker Street\",\n\t\"latLong\": \"-34.598310,-58.417344\"\n}"
+						},
+						"url": {
+							"raw": "142.93.81.129:8081/restaurant?minRating=3",
+							"host": [
+								"142",
+								"93",
+								"81",
+								"129"
+							],
+							"port": "8081",
+							"path": [
+								"restaurant"
+							],
+							"query": [
+								{
+									"key": "minRating",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Restaurants Cloud",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 1,\n    \"rating\": 4.5,\n    \"reviews\": [\n        {\n            \"name\": \"Richard\",\n            \"review\": \"Nice place!\",\n            \"rating\": 4\n        },\n        {\n            \"name\": \"Anne\",\n            \"review\": \"I LOVE POTATOES!\",\n            \"rating\": 5\n        }\n    ],\n    \"meals\": [\n\t\t{\n            \"name\": \"Fried Potatoes\",\n            \"description\": \"Yummy potatoes\",\n            \"price\": 2.5\n        },\n    \t{\n            \"name\": \"Baked Potatoes\",\n            \"description\": \"Dummy potatoes\",\n            \"price\": 3.5\n        }\n    ],\n    \"location\": {\n        \"latitude\": -34.629359,\n        \"longitude\": -58.537554\n    },\n    \"commercialEmail\": \"commercial.email@mail.com\",\n    \"logo\" : \"http://restaurant.com/logo.png\",\n\t\"commercialName\" : \"Betty's\",\n\t\"legalName\" : \"BETT\",\n\t\"adminNumber\" : \"343444442233\",\n\t\"address\" : \"221b Baker Street\"\n}"
+						},
+						"url": {
+							"raw": "142.93.81.129:8081/restaurant",
+							"host": [
+								"142",
+								"93",
+								"81",
+								"129"
+							],
+							"port": "8081",
+							"path": [
+								"restaurant"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
