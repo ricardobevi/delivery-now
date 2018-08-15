@@ -2,16 +2,19 @@ package com.ricardobevi.delivernow.config;
 
 import java.util.Arrays;
 
-import com.ricardobevi.delivernow.gateways.*;
-import com.ricardobevi.delivernow.gateways.impl.DatabaseRestaurantGateway;
-import com.ricardobevi.delivernow.gateways.impl.GmailMailGateway;
-import com.ricardobevi.delivernow.gateways.impl.GoogleMapsETAGateway;
-import com.ricardobevi.delivernow.gateways.impl.NotifServiceSMSGateway;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.ricardobevi.delivernow.dto.MealDto;
+import com.ricardobevi.delivernow.gateways.ETAGateway;
+import com.ricardobevi.delivernow.gateways.MailGateway;
+import com.ricardobevi.delivernow.gateways.RestaurantGateway;
+import com.ricardobevi.delivernow.gateways.SMSGateway;
+import com.ricardobevi.delivernow.gateways.impl.DatabaseRestaurantGateway;
+import com.ricardobevi.delivernow.gateways.impl.GoogleMapsETAGateway;
+import com.ricardobevi.delivernow.gateways.impl.NotifServiceEmailGateway;
+import com.ricardobevi.delivernow.gateways.impl.NotifServiceSMSGateway;
 import com.ricardobevi.delivernow.gateways.model.MealDAO;
 import com.ricardobevi.delivernow.gateways.model.RestaurantDAO;
 import com.ricardobevi.delivernow.gateways.model.RestaurantRepository;
@@ -37,8 +40,8 @@ public class BeansConfig {
 	}
 	
 	@Bean
-	public MailGateway GmailMailGateway() {
-		return new GmailMailGateway();
+	public MailGateway NotifServiceEmailGateway() {
+		return new NotifServiceEmailGateway();
 	}
 
 	@Bean

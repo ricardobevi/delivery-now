@@ -15,7 +15,9 @@ public class NotifServiceSMSGateway implements SMSGateway {
 		try{
 			restTemplate.postForEntity(
 					"http://notifications-api:8082/sms",
-					new HashMap<String, Object>(){{
+					new HashMap<String, Object>(){
+						private static final long serialVersionUID = -8458123647449259079L;
+					{
 						put("number","213123123131");
 						put("text","Your order has been placed!");
 					}},
