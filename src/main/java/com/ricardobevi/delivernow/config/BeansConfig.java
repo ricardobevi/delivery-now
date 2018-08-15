@@ -2,16 +2,19 @@ package com.ricardobevi.delivernow.config;
 
 import java.util.Arrays;
 
-import com.ricardobevi.delivernow.gateways.*;
-import com.ricardobevi.delivernow.gateways.impl.DatabaseRestaurantGateway;
-import com.ricardobevi.delivernow.gateways.impl.GmailMailGateway;
-import com.ricardobevi.delivernow.gateways.impl.GoogleMapsETAGateway;
-import com.ricardobevi.delivernow.gateways.impl.NotifServiceSMSGateway;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.ricardobevi.delivernow.dto.MealDto;
+import com.ricardobevi.delivernow.gateways.ETAGateway;
+import com.ricardobevi.delivernow.gateways.MailGateway;
+import com.ricardobevi.delivernow.gateways.RestaurantGateway;
+import com.ricardobevi.delivernow.gateways.SMSGateway;
+import com.ricardobevi.delivernow.gateways.impl.DatabaseRestaurantGateway;
+import com.ricardobevi.delivernow.gateways.impl.GoogleMapsETAGateway;
+import com.ricardobevi.delivernow.gateways.impl.NotifServiceEmailGateway;
+import com.ricardobevi.delivernow.gateways.impl.NotifServiceSMSGateway;
 import com.ricardobevi.delivernow.gateways.model.MealDAO;
 import com.ricardobevi.delivernow.gateways.model.RestaurantDAO;
 import com.ricardobevi.delivernow.gateways.model.RestaurantRepository;
@@ -37,8 +40,8 @@ public class BeansConfig {
 	}
 	
 	@Bean
-	public MailGateway GmailMailGateway() {
-		return new GmailMailGateway();
+	public MailGateway NotifServiceEmailGateway() {
+		return new NotifServiceEmailGateway();
 	}
 
 	@Bean
@@ -54,8 +57,8 @@ public class BeansConfig {
 					new RestaurantDAO(
 							1L,
 							Arrays.asList(
-									new ReviewDAO(1L, "Richard", "Nice place!", 4.0),
-									new ReviewDAO(1L, "Anne", "I LOVE POTATOES!", 5.0)
+									new ReviewDAO("Richard", "Nice place!", 4.0),
+									new ReviewDAO("Anne", "I LOVE POTATOES!", 5.0)
 							),
 							Arrays.asList(
 									new MealDAO(friedPotatoes), 
@@ -63,7 +66,12 @@ public class BeansConfig {
 							),
 							ciudadelaHood,
 							"commercial.email@mail.com",
-							4.5
+							4.5,
+							"http://restaurant.com/logo.png",
+							"Betty's",
+							"BETT",
+							"343444442233",
+							"221b Baker Street"
 					)
 			);
 		};

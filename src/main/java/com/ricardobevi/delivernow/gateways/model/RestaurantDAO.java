@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
@@ -17,7 +16,6 @@ import com.ricardobevi.delivernow.dto.RestaurantDto;
 public class RestaurantDAO {
 	
 	@Id
-	@GeneratedValue
 	private Long id;
 	
 	@OneToMany(cascade=CascadeType.ALL)
@@ -35,6 +33,12 @@ public class RestaurantDAO {
 	
 	private Double rating;
 	
+	private String logo;
+	private String commercialName;
+	private String legalName;
+	private String adminNumber;
+	private String address;
+	
 	public RestaurantDAO() {}
 	
 	public RestaurantDAO(
@@ -43,13 +47,25 @@ public class RestaurantDAO {
 			List<MealDAO> meals, 
 			String latLong,
 			String commercialEmail,
-			Double rating) {
+			Double rating,
+			
+			String logo,
+			String commercialName, 
+			String legalName,
+			String adminNumber, 
+			String address) {
 		this.id = id;
 		this.reviews = reviews;
 		this.meals = meals;
 		this.latLong = latLong;
 		this.commercialEmail = commercialEmail;
 		this.rating = rating;
+		
+		this.logo = logo;
+		this.commercialName = commercialName;
+		this.legalName = legalName;
+		this.adminNumber = adminNumber;
+		this.address = address;
 	}
 
 	public Long getId() {
@@ -65,7 +81,13 @@ public class RestaurantDAO {
 				meals.stream().map(MealDAO::asDto).collect(Collectors.toList()),
 				orders.stream().map(OrderDAO::asDto).collect(Collectors.toList()),
 				LatLongLocationDto.parseString(latLong),
-				this.commercialEmail
+				this.commercialEmail,
+				
+				this.logo,
+				this.commercialName,
+				this.legalName,
+				this.adminNumber,
+				this.address
 		);
 		
 		return restaurantDto;
@@ -78,35 +100,3 @@ public class RestaurantDAO {
 	}
 	
 }
-
-
-/*
-COMPLETE MODEL
-
-{
-     id : any
-logo : text (url)
-commercialName : text
-legalName : text
-rating : (float max 5 min 1)
-reviews : [
-{
-name : text
-review : text
-      rating : number
-}
-]
-meals : [
-{
-name : text
-description : text
-price : float
-}
-]
-     commercialEmail : text
-     adminNumber : text
-     address : text
-     Location : latLng
-}
-
-*/

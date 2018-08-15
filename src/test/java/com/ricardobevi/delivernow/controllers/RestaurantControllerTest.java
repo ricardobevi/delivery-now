@@ -5,6 +5,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
@@ -13,6 +14,7 @@ import java.nio.charset.Charset;
 import java.util.Arrays;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +48,8 @@ public class RestaurantControllerTest {
 	
 	private MockMvc mockMvc;
 	
-    @SuppressWarnings("rawtypes")
+    
+	@SuppressWarnings("rawtypes")
 	private HttpMessageConverter mappingJackson2HttpMessageConverter;
 	
     @Autowired
@@ -80,14 +83,19 @@ public class RestaurantControllerTest {
     	Long restaurantId = restaurantRepository.save(
 				new RestaurantDAO(
 						2L,
-						Arrays.asList(new ReviewDAO(1L, "Richard", "Nice place!", 4.0)),
+						Arrays.asList(new ReviewDAO("Richard", "Nice place!", 4.0)),
 						Arrays.asList(
 								new MealDAO(MockedRestaurantGateway.friedPotatoes), 
 								new MealDAO(MockedRestaurantGateway.bakedPotatoes)
 						),
 						MockedETAGateway.ciudadelaHood,
 						"commercial.email@mail.com",
-						4.0
+						4.0,
+						"http://restaurant.com/logo.png",
+						"Betty's",
+						"BETT",
+						"343444442233",
+						"221b Baker Street"
 				)
 		).getId();
     	
@@ -122,14 +130,19 @@ public class RestaurantControllerTest {
     	Long restaurantId = restaurantRepository.save(
 				new RestaurantDAO(
 						2L,
-						Arrays.asList(new ReviewDAO(1L, "Richard", "Nice place!", 5.0)),
+						Arrays.asList(new ReviewDAO("Richard", "Nice place!", 5.0)),
 						Arrays.asList(
 								new MealDAO(MockedRestaurantGateway.friedPotatoes), 
 								new MealDAO(MockedRestaurantGateway.bakedPotatoes)
 						),
 						MockedETAGateway.ciudadelaHood,
 						"commercial.email@mail.com",
-						5.0
+						5.0,
+						"http://restaurant.com/logo.png",
+						"Betty's",
+						"BETT",
+						"343444442233",
+						"221b Baker Street"
 				)
 		).getId();
     	
@@ -139,6 +152,80 @@ public class RestaurantControllerTest {
         		.andExpect(jsonPath("$[0].id", is(restaurantId.intValue())))
                 ;
         
+    }
+    
+    
+    @Test
+    @Ignore
+    public void updateRestaurantInformation() throws Exception {
+    	
+    	restaurantRepository.save(
+				new RestaurantDAO(
+						100L,
+						Arrays.asList(new ReviewDAO("Richard", "Nice place!", 5.0)),
+						Arrays.asList(
+								new MealDAO(MockedRestaurantGateway.friedPotatoes), 
+								new MealDAO(MockedRestaurantGateway.bakedPotatoes)
+						),
+						MockedETAGateway.ciudadelaHood,
+						"commercial.email@mail.com",
+						1.0,
+						
+						"http://restaurant.com/logo.png",
+						"Betty's",
+						"BETT",
+						"343444442233",
+						"221b Baker Street"
+				)
+		);
+    	
+    
+    	String inputJSON = "{\n" + 
+    			"    \"id\": 100,\n" + 
+    			"    \"rating\": 3,\n" + 
+    			"    \"reviews\": [\n" + 
+    			"        {\n" + 
+    			"            \"name\": \"Richard\",\n" + 
+    			"            \"review\": \"Nice place!\",\n" + 
+    			"            \"rating\": 4\n" + 
+    			"        },\n" + 
+    			"        {\n" + 
+    			"            \"name\": \"Anne\",\n" + 
+    			"            \"review\": \"I LOVE POTATOES!\",\n" + 
+    			"            \"rating\": 5\n" + 
+    			"        }\n" + 
+    			"    ],\n" + 
+    			"    \"meals\": [\n" + 
+    			"        {\n" + 
+    			"            \"name\": \"Fried Potatoes\",\n" + 
+    			"            \"description\": \"Yummy potatoes\",\n" + 
+    			"            \"price\": 2.5\n" + 
+    			"        },\n" + 
+    			"        {\n" + 
+    			"            \"name\": \"Baked Potatoes\",\n" + 
+    			"            \"description\": \"Dummy potatoes lla\",\n" + 
+    			"            \"price\": 3.5\n" + 
+    			"        }\n" + 
+    			"    ],\n" + 
+    			"    \"location\": {\n" + 
+    			"        \"latitude\": -34.629359,\n" + 
+    			"        \"longitude\": -58.537554\n" + 
+    			"    },\n" + 
+    			"    \"commercialEmail\": \"commercial.email@mail.com\",\n" + 
+    			"    \"logo\": \"http://restaurant.com/logo.png\",\n" + 
+    			"    \"commercialName\": \"Betty's\",\n" + 
+    			"    \"legalName\": \"BETT\",\n" + 
+    			"    \"adminNumber\": \"343444442233\",\n" + 
+    			"    \"address\": \"221b Baker Street\"\n" + 
+    			"}";
+    	
+    	
+        this.mockMvc.perform(put("/restaurant")
+                .contentType(contentType)
+                .content(inputJSON))
+        		.andExpect(status().isOk())
+        		.andExpect(jsonPath("$.", is(inputJSON))) 
+                ;    	
     }
     
     
@@ -153,5 +240,6 @@ public class RestaurantControllerTest {
         
         
     }
+    
     
 }

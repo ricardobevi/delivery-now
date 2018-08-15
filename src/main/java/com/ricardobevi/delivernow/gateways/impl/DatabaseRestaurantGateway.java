@@ -31,12 +31,12 @@ public class DatabaseRestaurantGateway implements RestaurantGateway {
 	}
 	
 	@Transactional
-	public void save(RestaurantDto restaurantDto) {
+	public RestaurantDto save(RestaurantDto restaurantDto) {
 		RestaurantDAO restaurantDao = findRestaurantById(restaurantDto.getId());
 
 		restaurantDao.updateWithDto(restaurantDto);
 		
-		restaurantRepository.save(restaurantDao);
+		return restaurantRepository.save(restaurantDao).asDto();
 	}
 	
 	@Transactional

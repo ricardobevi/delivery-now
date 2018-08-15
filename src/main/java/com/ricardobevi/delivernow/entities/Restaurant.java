@@ -16,6 +16,13 @@ public class Restaurant {
 	private LatLongLocation location;
 	private String commercialEmail;
 	
+	private String logo;
+	private String commercialName;
+	private String legalName;
+	private String adminNumber;
+	private String address;
+	
+	
 	public Restaurant(List<Meal> meals) {
 		restaurantId = null;
 		this.reviews = new ArrayList<Review>();
@@ -67,7 +74,13 @@ public class Restaurant {
 				meals.stream().map(Meal::asDto).collect(Collectors.toList()),
 				orders.stream().map(Order::asDto).collect(Collectors.toList()),
 				this.location.asDto(),
-				this.commercialEmail
+				this.commercialEmail,
+				
+				this.logo,
+				this.commercialName,
+				this.legalName,
+				this.adminNumber,
+				this.address
 		);
 		
 		return restaurantDto;
