@@ -1,7 +1,6 @@
 package com.ricardobevi.delivernow.controllers;
 
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -11,7 +10,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
-import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 
@@ -24,7 +22,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.mock.http.MockHttpOutputMessage;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -32,10 +29,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.ricardobevi.delivernow.MainApplication;
-import com.ricardobevi.delivernow.dto.LatLongLocationDto;
-import com.ricardobevi.delivernow.dto.OrderDto;
-import com.ricardobevi.delivernow.dto.RestaurantDto;
-import com.ricardobevi.delivernow.dto.ReviewDto;
 import com.ricardobevi.delivernow.gateways.mocks.MockedETAGateway;
 import com.ricardobevi.delivernow.gateways.model.MealDAO;
 import com.ricardobevi.delivernow.gateways.model.RestaurantDAO;
@@ -55,7 +48,8 @@ public class RestaurantControllerTest {
 	
 	private MockMvc mockMvc;
 	
-    @SuppressWarnings("rawtypes")
+    
+	@SuppressWarnings("rawtypes")
 	private HttpMessageConverter mappingJackson2HttpMessageConverter;
 	
     @Autowired
@@ -165,7 +159,7 @@ public class RestaurantControllerTest {
     @Ignore
     public void updateRestaurantInformation() throws Exception {
     	
-    	RestaurantDAO restaurantDAO = restaurantRepository.save(
+    	restaurantRepository.save(
 				new RestaurantDAO(
 						100L,
 						Arrays.asList(new ReviewDAO("Richard", "Nice place!", 5.0)),
@@ -186,49 +180,52 @@ public class RestaurantControllerTest {
 		);
     	
     
-    	RestaurantDto restaurantDto = new RestaurantDto(
-    			100L, 
-				1.0, 
-				Arrays.asList(
-						new ReviewDto("John", "Nice place to hang out with friends!", 4.5)
-				),
-				Arrays.asList(
-						MockedRestaurantGateway.friedPotatoes,
-						MockedRestaurantGateway.bakedPotatoes,
-						MockedRestaurantGateway.smashedPotatoes
-				),
-				Arrays.asList(
-						new OrderDto(
-							Arrays.asList(MockedRestaurantGateway.friedPotatoes),
-							2.5,
-							"221b Baker Street",
-							new LatLongLocationDto(MockedETAGateway.haedoCity)
-						)
-				),
-				new LatLongLocationDto(MockedETAGateway.ciudadelaHood),
-				"commercial.email@mail.com",
-				
-				"http://restaurant.com/logo.png",
-				"Betty's",
-				"BETT",
-				"343444442233",
-				"221b Baker Street"
-    	);
+    	String inputJSON = "{\n" + 
+    			"    \"id\": 100,\n" + 
+    			"    \"rating\": 3,\n" + 
+    			"    \"reviews\": [\n" + 
+    			"        {\n" + 
+    			"            \"name\": \"Richard\",\n" + 
+    			"            \"review\": \"Nice place!\",\n" + 
+    			"            \"rating\": 4\n" + 
+    			"        },\n" + 
+    			"        {\n" + 
+    			"            \"name\": \"Anne\",\n" + 
+    			"            \"review\": \"I LOVE POTATOES!\",\n" + 
+    			"            \"rating\": 5\n" + 
+    			"        }\n" + 
+    			"    ],\n" + 
+    			"    \"meals\": [\n" + 
+    			"        {\n" + 
+    			"            \"name\": \"Fried Potatoes\",\n" + 
+    			"            \"description\": \"Yummy potatoes\",\n" + 
+    			"            \"price\": 2.5\n" + 
+    			"        },\n" + 
+    			"        {\n" + 
+    			"            \"name\": \"Baked Potatoes\",\n" + 
+    			"            \"description\": \"Dummy potatoes lla\",\n" + 
+    			"            \"price\": 3.5\n" + 
+    			"        }\n" + 
+    			"    ],\n" + 
+    			"    \"location\": {\n" + 
+    			"        \"latitude\": -34.629359,\n" + 
+    			"        \"longitude\": -58.537554\n" + 
+    			"    },\n" + 
+    			"    \"commercialEmail\": \"commercial.email@mail.com\",\n" + 
+    			"    \"logo\": \"http://restaurant.com/logo.png\",\n" + 
+    			"    \"commercialName\": \"Betty's\",\n" + 
+    			"    \"legalName\": \"BETT\",\n" + 
+    			"    \"adminNumber\": \"343444442233\",\n" + 
+    			"    \"address\": \"221b Baker Street\"\n" + 
+    			"}";
     	
     	
         this.mockMvc.perform(put("/restaurant")
                 .contentType(contentType)
-                .content(json(restaurantDto)))
+                .content(inputJSON))
         		.andExpect(status().isOk())
-                ;
-        
-        String savedJson = json(restaurantDAO.asDto());
-        String expectedJson = json(restaurantDto);
-        
-        
-        assertEquals(expectedJson, savedJson);
-    	
-    	
+        		.andExpect(jsonPath("$.", is(inputJSON))) 
+                ;    	
     }
     
     
@@ -245,12 +242,4 @@ public class RestaurantControllerTest {
     }
     
     
-    
-    @SuppressWarnings("unchecked")
- 	private String json(Object o) throws IOException {
-         MockHttpOutputMessage mockHttpOutputMessage = new MockHttpOutputMessage();
-         this.mappingJackson2HttpMessageConverter.write(
-                 o, MediaType.APPLICATION_JSON, mockHttpOutputMessage);
-         return mockHttpOutputMessage.getBodyAsString();
-     }
 }

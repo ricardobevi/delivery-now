@@ -7,7 +7,7 @@ import com.ricardobevi.delivernow.dto.RestaurantDto;
 public interface RestaurantGateway {
 
 	RestaurantDto getRestaurantFromId(Long restaurantId);
-	void save(RestaurantDto restaurantDto);
+	RestaurantDto save(RestaurantDto restaurantDto);
 	void delete(RestaurantDto restaurantDto);
 	List<RestaurantDto> listAll();
 	List<RestaurantDto> listAllWithRatingGreaterThan(Double minRating);

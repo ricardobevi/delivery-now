@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ricardobevi.delivernow.controllers.requests.ErrorResponse;
+import com.ricardobevi.delivernow.controllers.requests.RestaurantRequest;
 import com.ricardobevi.delivernow.dto.RestaurantDto;
 import com.ricardobevi.delivernow.gateways.RestaurantGateway;
 import com.ricardobevi.delivernow.gateways.exceptions.RestaurantNotFoundException;
@@ -45,11 +46,13 @@ public class RestaurantController {
 	
 
 	@RequestMapping(value = "/restaurant", method = RequestMethod.PUT)
-    public ResponseEntity<Object> update(@RequestBody RestaurantDto restaurantDto) {
+    public ResponseEntity<Object> update(@RequestBody RestaurantRequest restaurantRequest) {
 
-		restaurantGateway.save(restaurantDto);
+		RestaurantDto restaurantDto = restaurantRequest.asDto();
 		
-		return ResponseEntity.ok(restaurantDto);
+		RestaurantDto savedRestaurantDto = restaurantGateway.save(restaurantDto);
+		
+		return ResponseEntity.ok(savedRestaurantDto);
 		
     }
 

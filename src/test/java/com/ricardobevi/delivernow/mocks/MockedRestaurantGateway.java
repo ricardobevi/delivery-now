@@ -24,35 +24,36 @@ public class MockedRestaurantGateway implements RestaurantGateway {
 	
 	List<RestaurantDto> restaurants = new ArrayList<RestaurantDto>();
 	
+	private final RestaurantDto restaurantDto = new RestaurantDto(
+			1L, 
+			1.0, 
+			Arrays.asList(
+					new ReviewDto("John", "Nice place to hang out with friends!", 4.5)
+			),
+			Arrays.asList(
+					friedPotatoes,
+					bakedPotatoes,
+					smashedPotatoes
+			),
+			Arrays.asList(
+					new OrderDto(
+						Arrays.asList(friedPotatoes),
+						2.5,
+						"221b Baker Street",
+						new LatLongLocationDto(MockedETAGateway.haedoCity)
+					)
+			),
+			new LatLongLocationDto(MockedETAGateway.ciudadelaHood),
+			"commercial.email@mail.com",
+			
+			"http://restaurant.com/logo.png",
+			"Betty's",
+			"BETT",
+			"343444442233",
+			"221b Baker Street"
+	);
+	
 	public RestaurantDto getRestaurantFromId(Long restaurantId) {
-		RestaurantDto restaurantDto = new RestaurantDto(
-				1L, 
-				1.0, 
-				Arrays.asList(
-						new ReviewDto("John", "Nice place to hang out with friends!", 4.5)
-				),
-				Arrays.asList(
-						friedPotatoes,
-						bakedPotatoes,
-						smashedPotatoes
-				),
-				Arrays.asList(
-						new OrderDto(
-							Arrays.asList(friedPotatoes),
-							2.5,
-							"221b Baker Street",
-							new LatLongLocationDto(MockedETAGateway.haedoCity)
-						)
-				),
-				new LatLongLocationDto(MockedETAGateway.ciudadelaHood),
-				"commercial.email@mail.com",
-				
-				"http://restaurant.com/logo.png",
-				"Betty's",
-				"BETT",
-				"343444442233",
-				"221b Baker Street"
-		);
 		
 		this.restaurants.add(restaurantDto);
 		
@@ -60,7 +61,10 @@ public class MockedRestaurantGateway implements RestaurantGateway {
 	}
 
 
-	public void save(RestaurantDto asDto) {
+	public RestaurantDto save(RestaurantDto restaurantDto) {
+		this.restaurants.add(restaurantDto);
+		
+		return restaurantDto;
 	}
 
 
