@@ -45,7 +45,13 @@ public class MockedRestaurantGateway implements RestaurantGateway {
 						)
 				),
 				new LatLongLocationDto(MockedETAGateway.ciudadelaHood),
-				"commercial.email@mail.com"
+				"commercial.email@mail.com",
+				
+				"http://restaurant.com/logo.png",
+				"Betty's",
+				"BETT",
+				"343444442233",
+				"221b Baker Street"
 		);
 		
 		this.restaurants.add(restaurantDto);

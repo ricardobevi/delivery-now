@@ -18,8 +18,7 @@ public class ReviewDAO {
     private String review;
     private Double rating;
     
-    public ReviewDAO(Long id, String name, String review, Double rating) {
-		this.id = id;
+    public ReviewDAO(String name, String review, Double rating) {
 		this.name = name;
 		this.review = review;
 		this.rating = rating;

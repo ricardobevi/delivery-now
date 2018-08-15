@@ -54,8 +54,8 @@ public class BeansConfig {
 					new RestaurantDAO(
 							1L,
 							Arrays.asList(
-									new ReviewDAO(1L, "Richard", "Nice place!", 4.0),
-									new ReviewDAO(1L, "Anne", "I LOVE POTATOES!", 5.0)
+									new ReviewDAO("Richard", "Nice place!", 4.0),
+									new ReviewDAO("Anne", "I LOVE POTATOES!", 5.0)
 							),
 							Arrays.asList(
 									new MealDAO(friedPotatoes), 
@@ -63,7 +63,12 @@ public class BeansConfig {
 							),
 							ciudadelaHood,
 							"commercial.email@mail.com",
-							4.5
+							4.5,
+							"http://restaurant.com/logo.png",
+							"Betty's",
+							"BETT",
+							"343444442233",
+							"221b Baker Street"
 					)
 			);
 		};

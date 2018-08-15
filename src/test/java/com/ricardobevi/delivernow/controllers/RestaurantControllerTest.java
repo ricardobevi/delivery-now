@@ -1,18 +1,22 @@
 package com.ricardobevi.delivernow.controllers;
 
 import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
+import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +24,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.mock.http.MockHttpOutputMessage;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -27,6 +32,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.ricardobevi.delivernow.MainApplication;
+import com.ricardobevi.delivernow.dto.LatLongLocationDto;
+import com.ricardobevi.delivernow.dto.OrderDto;
+import com.ricardobevi.delivernow.dto.RestaurantDto;
+import com.ricardobevi.delivernow.dto.ReviewDto;
 import com.ricardobevi.delivernow.gateways.mocks.MockedETAGateway;
 import com.ricardobevi.delivernow.gateways.model.MealDAO;
 import com.ricardobevi.delivernow.gateways.model.RestaurantDAO;
@@ -80,14 +89,19 @@ public class RestaurantControllerTest {
     	Long restaurantId = restaurantRepository.save(
 				new RestaurantDAO(
 						2L,
-						Arrays.asList(new ReviewDAO(1L, "Richard", "Nice place!", 4.0)),
+						Arrays.asList(new ReviewDAO("Richard", "Nice place!", 4.0)),
 						Arrays.asList(
 								new MealDAO(MockedRestaurantGateway.friedPotatoes), 
 								new MealDAO(MockedRestaurantGateway.bakedPotatoes)
 						),
 						MockedETAGateway.ciudadelaHood,
 						"commercial.email@mail.com",
-						4.0
+						4.0,
+						"http://restaurant.com/logo.png",
+						"Betty's",
+						"BETT",
+						"343444442233",
+						"221b Baker Street"
 				)
 		).getId();
     	
@@ -122,14 +136,19 @@ public class RestaurantControllerTest {
     	Long restaurantId = restaurantRepository.save(
 				new RestaurantDAO(
 						2L,
-						Arrays.asList(new ReviewDAO(1L, "Richard", "Nice place!", 5.0)),
+						Arrays.asList(new ReviewDAO("Richard", "Nice place!", 5.0)),
 						Arrays.asList(
 								new MealDAO(MockedRestaurantGateway.friedPotatoes), 
 								new MealDAO(MockedRestaurantGateway.bakedPotatoes)
 						),
 						MockedETAGateway.ciudadelaHood,
 						"commercial.email@mail.com",
-						5.0
+						5.0,
+						"http://restaurant.com/logo.png",
+						"Betty's",
+						"BETT",
+						"343444442233",
+						"221b Baker Street"
 				)
 		).getId();
     	
@@ -139,6 +158,77 @@ public class RestaurantControllerTest {
         		.andExpect(jsonPath("$[0].id", is(restaurantId.intValue())))
                 ;
         
+    }
+    
+    
+    @Test
+    @Ignore
+    public void updateRestaurantInformation() throws Exception {
+    	
+    	RestaurantDAO restaurantDAO = restaurantRepository.save(
+				new RestaurantDAO(
+						100L,
+						Arrays.asList(new ReviewDAO("Richard", "Nice place!", 5.0)),
+						Arrays.asList(
+								new MealDAO(MockedRestaurantGateway.friedPotatoes), 
+								new MealDAO(MockedRestaurantGateway.bakedPotatoes)
+						),
+						MockedETAGateway.ciudadelaHood,
+						"commercial.email@mail.com",
+						1.0,
+						
+						"http://restaurant.com/logo.png",
+						"Betty's",
+						"BETT",
+						"343444442233",
+						"221b Baker Street"
+				)
+		);
+    	
+    
+    	RestaurantDto restaurantDto = new RestaurantDto(
+    			100L, 
+				1.0, 
+				Arrays.asList(
+						new ReviewDto("John", "Nice place to hang out with friends!", 4.5)
+				),
+				Arrays.asList(
+						MockedRestaurantGateway.friedPotatoes,
+						MockedRestaurantGateway.bakedPotatoes,
+						MockedRestaurantGateway.smashedPotatoes
+				),
+				Arrays.asList(
+						new OrderDto(
+							Arrays.asList(MockedRestaurantGateway.friedPotatoes),
+							2.5,
+							"221b Baker Street",
+							new LatLongLocationDto(MockedETAGateway.haedoCity)
+						)
+				),
+				new LatLongLocationDto(MockedETAGateway.ciudadelaHood),
+				"commercial.email@mail.com",
+				
+				"http://restaurant.com/logo.png",
+				"Betty's",
+				"BETT",
+				"343444442233",
+				"221b Baker Street"
+    	);
+    	
+    	
+        this.mockMvc.perform(put("/restaurant")
+                .contentType(contentType)
+                .content(json(restaurantDto)))
+        		.andExpect(status().isOk())
+                ;
+        
+        String savedJson = json(restaurantDAO.asDto());
+        String expectedJson = json(restaurantDto);
+        
+        
+        assertEquals(expectedJson, savedJson);
+    	
+    	
     }
     
     
@@ -154,4 +244,13 @@ public class RestaurantControllerTest {
         
     }
     
+    
+    
+    @SuppressWarnings("unchecked")
+ 	private String json(Object o) throws IOException {
+         MockHttpOutputMessage mockHttpOutputMessage = new MockHttpOutputMessage();
+         this.mappingJackson2HttpMessageConverter.write(
+                 o, MediaType.APPLICATION_JSON, mockHttpOutputMessage);
+         return mockHttpOutputMessage.getBodyAsString();
+     }
 }
