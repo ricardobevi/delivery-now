@@ -68,11 +68,6 @@ Then build this project and use the included `yml` file to run
 docker-compose up
 ```
 
-#### Life is too short for a build
-
-Fine, I agree, that's why I took the time to put it all on a [server](http://142.93.81.129:8081/restaurant?minRating=3). Also there is a Postman collection to requests to this server.
-
-
 ## Notifications API
 
 Fist, you should know that I'm terrible with naming things. Having said that, one requirement was to have a separate service to send SMSs and EMails. This service provides that in a way. Today is just a mock to show the possibility of communication between two services.
@@ -134,7 +129,7 @@ Delete, edit and list restaurants.
 
 #### GET /restaurant
 
-Sample `GET` request ([try it!](http://142.93.81.129:8081/restaurant?minRating=3)):
+Sample `GET` request:
 
 ```
 http://142.93.81.129:8081/restaurant?minRating=3
